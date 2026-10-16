@@ -538,16 +538,19 @@ h1 {
       readRewards().includes("letters");
   }
 
-  function updateProgress() {
-    const progress = Math.min(completedLevels / UNLOCK_LEVEL, 1);
+function updateProgress() {
+  const progress = Math.min(completedLevels / UNLOCK_LEVEL, 1);
 
-    progressFill.style.width = `${progress * 100}%`;
-    unlockMessage.classList.toggle("visible", isUnlocked());
+  progressFill.style.width = `${progress * 100}%`;
 
-    if (completedLevels >= UNLOCK_LEVEL) {
-      unlockLetters();
-    }
+  const unlocked = completedLevels >= UNLOCK_LEVEL;
+
+  unlockMessage.classList.toggle("visible", unlocked);
+
+  if (unlocked) {
+    unlockLetters();
   }
+      }
 
   function playSound(frequency = 520, duration = 0.09, volume = 0.035) {
     try {

@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♡</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(170,210,255,0.8) 0 2px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.8) 0 1px, transparent 2px),
+                linear-gradient(135deg, #080d18, #101d35 50%, #080d18);
+            background-size: 130px 130px, 170px 170px, 100% 100%;
+            color: #dce8fa;
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "✦";
+            position: fixed;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 90px;
+            color: rgba(155,195,255,0.15);
+            pointer-events: none;
+        }
+
+        body::before {
+            top: 20px;
+            left: 30px;
+        }
+
+        body::after {
+            content: "✧";
+            bottom: 10px;
+            right: 35px;
+            font-size: 70px;
+        }
+
+        .inventory-button {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 12px 22px;
+            border: 1px solid rgba(180,210,255,0.3);
+            border-radius: 50px;
+            background: rgba(15,28,50,0.65);
+            color: #dce8fa;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-decoration: none;
+            backdrop-filter: blur(12px);
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .inventory-button:hover {
+            background: rgba(65,105,165,0.35);
+            transform: translateY(-2px);
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 70px 20px;
+        }
+
+        .ornament {
+            font-family: 'Cormorant Garamond', serif;
+            color: #799acb;
+            font-size: 20px;
+            letter-spacing: 10px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(42px, 8vw, 70px);
+            font-weight: 500;
+            color: #e1ecff;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 19px;
+            color: #8ca9d6;
+            letter-spacing: 3px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .game-container {
+            width: min(460px, 100%);
+            padding: 25px;
+            background: rgba(14,25,44,0.7);
+            border: 1px solid rgba(180,210,255,0.18);
+            border-radius: 28px;
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.25),
+                inset 0 0 30px rgba(130,175,255,0.04);
+            backdrop-filter: blur(12px);
+        }
+
+        .games {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .game-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 21px 22px;
+            border: 1px solid rgba(165,200,255,0.2);
+            border-radius: 18px;
+            background: linear-gradient(
+                135deg,
+                rgba(54,83,130,0.24),
+                rgba(15,29,51,0.65)
+            );
+            color: #e0eaff;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            border-color: rgba(165,200,255,0.55);
+            background: linear-gradient(
+                135deg,
+                rgba(65,105,165,0.4),
+                rgba(20,38,66,0.85)
+            );
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+        }
+
+        .game-button span:last-child {
+            color: #7799cc;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+        }
+
+        .bottom-ornament {
+            margin-top: 30px;
+            color: #799acb;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            letter-spacing: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 80px 18px 45px;
+            }
+
+            .inventory-button {
+                top: 18px;
+                right: 18px;
+                padding: 10px 17px;
+                font-size: 11px;
+            }
+
+            .game-container {
+                padding: 15px;
+                border-radius: 22px;
+            }
+
+            .game-button {
+                padding: 19px 17px;
+                font-size: 24px;
+                border-radius: 15px;
+            }
+
+            .subtitle {
+                font-size: 17px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="inventory.html" class="inventory-button">inventory</a>
+
+    <main class="page">
+
+        <div class="ornament">✦　⋆　✦</div>
+
+        <h1>♡</h1>
+
+        <div class="subtitle">✧　choose a game　✧</div>
+
+        <section class="game-container">
+            <div class="games">
+                <a href="watersort.html" class="game-button">
+                    <span>watersort</span>
+                    <span>↗</span>
+                </a>
+
+                <a href="colormatch.html" class="game-button">
+                    <span>colormatch</span>
+                    <span>↗</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="bottom-ornament">✧　·　✦　·　✧</div>
+
+    </main>
+
+</body>
+</html>

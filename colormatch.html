@@ -3,764 +3,851 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>♡ connect the colors</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Connect the Colors ♡</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --bg: #080d18;
-  --blue: #83baff;
-  --text: #e2eaf7;
-  --border: rgba(131,186,255,.2);
+  --panel: rgba(19, 33, 55, .78);
+  --line: rgba(183, 211, 255, .13);
+  --text: #edf2ff;
+  --muted: #98a9c5;
+  --blue: #82c9ff;
 }
-* { box-sizing: border-box; }
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
+
+* {
+  box-sizing: border-box;
 }
+
 body {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
+  margin: 0;
+  min-height: 100vh;
+  padding: 22px 14px 35px;
   color: var(--text);
-  background:
-    radial-gradient(ellipse at 50% 0%, #142642 0%, transparent 54%),
-    radial-gradient(ellipse at 0% 100%, #101d34 0%, transparent 45%),
-    var(--bg);
   font-family: 'Quicksand', sans-serif;
-  user-select: none;
-  -webkit-user-select: none;
-}
-#stars {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-.star {
-  position: absolute;
-  color: #c4dcff;
-  opacity: .35;
-  animation: twinkle var(--duration,4s) ease-in-out infinite alternate;
-  animation-delay: var(--delay,0s);
-}
-@keyframes twinkle {
-  from { opacity: .12; transform: scale(.8); }
-  to { opacity: .7; transform: scale(1.15); }
-}
-.page {
-  width: min(100%,510px);
-  max-height: 100%;
+  background:
+    radial-gradient(ellipse at 50% 0%, #1a3150 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 75%, #111c32 0%, transparent 50%),
+    var(--bg);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: clamp(8px,1.7vh,15px);
-  position: relative;
-  z-index: 1;
+  overflow-x: hidden;
 }
-.topbar {
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page {
   width: 100%;
+  max-width: 520px;
+  margin: auto;
+}
+
+.topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
+  margin-bottom: 24px;
 }
-.small-button {
-  border: 1px solid var(--border);
-  background: rgba(16,30,52,.65);
-  color: #b8cce8;
+
+.small-btn {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: rgba(255,255,255,.035);
+  padding: 9px 13px;
   border-radius: 30px;
-  padding: 8px 13px;
-  font: 500 11px 'Quicksand',sans-serif;
-  letter-spacing: .5px;
-  cursor: pointer;
-  transition: background .25s,border-color .25s,transform .25s;
-}
-.small-button:hover {
-  background: rgba(76,126,190,.18);
-  border-color: rgba(131,186,255,.5);
-}
-.small-button:active { transform: scale(.96); }
-.heading { text-align: center; flex-shrink: 0; }
-.ornament {
-  color: #91baff;
-  font-size: 12px;
-  letter-spacing: 8px;
-  opacity: .7;
-  margin-bottom: 1px;
-}
-h1 {
-  font-family: 'Cormorant Garamond',serif;
-  font-weight: 400;
-  font-size: clamp(31px,6.5vh,43px);
-  line-height: 1;
-  letter-spacing: 2px;
-  margin: 2px 0 5px;
-  color: #e4edff;
-}
-.subtitle {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #91a8c9;
-  text-transform: lowercase;
-}
-.progress-wrap {
-  width: min(100%,340px);
-  padding: 0 3px;
-  flex-shrink: 0;
-}
-.progress-track {
-  height: 3px;
-  width: 100%;
-  border-radius: 20px;
-  overflow: hidden;
-  background: rgba(131,186,255,.12);
-}
-.progress-line {
-  height: 100%;
-  width: 0%;
-  border-radius: inherit;
-  background: linear-gradient(90deg,#5a8fd0,#b1d7ff);
-  box-shadow: 0 0 9px rgba(131,186,255,.65);
-  transition: width .65s cubic-bezier(.2,.8,.2,1);
-}
-.progress-line.pulse {
-  animation: linePulse 3.2s ease-in-out infinite;
-}
-@keyframes linePulse {
-  0%,100% { opacity: .28; box-shadow: 0 0 3px rgba(131,186,255,.2); }
-  50% { opacity: 1; box-shadow: 0 0 13px rgba(131,186,255,.9); }
-}
-.game-card {
-  width: min(100%,420px);
-  padding: clamp(12px,2.3vh,18px);
-  border: 1px solid var(--border);
-  border-radius: 27px;
-  background: rgba(14,25,44,.76);
-  box-shadow: 0 15px 50px rgba(0,0,0,.18),inset 0 0 25px rgba(92,145,211,.025);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 1;
-  min-height: 0;
-}
-.board {
-  position: relative;
-  width: min(100%,365px,48vh);
-  aspect-ratio: 1;
-  display: grid;
-  touch-action: none;
-  overflow: visible;
-}
-.cell {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  border: 1px solid rgba(145,179,224,.075);
-  border-radius: 8px;
-  background: rgba(10,19,34,.43);
-}
-.cell.occupied { background: rgba(91,135,190,.08); }
-.cell.endpoint { background: rgba(91,135,190,.035); }
-.paths-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 2;
-}
-.path-line {
-  fill: none;
-  stroke-width: 5.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: .94;
-  filter: drop-shadow(0 0 2px currentColor);
-  transition: opacity .35s ease;
-}
-.path-line.completed { animation: pathPulse 3.2s ease-in-out infinite; }
-@keyframes pathPulse {
-  0%,100% { opacity: .36; }
-  50% { opacity: .98; }
-}
-.endpoint-ball {
-  stroke: rgba(255,255,255,.8);
-  stroke-width: .7;
-  filter: drop-shadow(0 0 2px currentColor);
-}
-.bottom-ornament {
-  color: #91baff;
   font-size: 11px;
-  letter-spacing: 7px;
-  opacity: .55;
+  letter-spacing: .5px;
+  transition: .18s ease;
+}
+
+.small-btn:active {
+  transform: scale(.96);
+}
+
+.heading {
   text-align: center;
-  flex-shrink: 0;
-}
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 5;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 22px;
-  background: rgba(3,7,15,.72);
-  backdrop-filter: blur(8px);
-}
-.modal.show {
-  display: flex;
-  animation: fadeIn .3s ease both;
-}
-.modal-card {
-  width: min(100%,330px);
-  text-align: center;
-  border: 1px solid rgba(131,186,255,.32);
-  border-radius: 25px;
-  padding: 28px 23px;
-  background: radial-gradient(ellipse at top,rgba(48,80,126,.24),transparent 65%),#0c1628;
-  box-shadow: 0 20px 70px rgba(0,0,0,.35);
-  animation: riseIn .45s cubic-bezier(.2,.8,.2,1) both;
-}
-.modal-ornament {
-  font-size: 14px;
-  letter-spacing: 8px;
-  color: var(--blue);
-  margin-bottom: 9px;
-}
-.modal-title {
-  font-family: 'Cormorant Garamond',serif;
-  font-size: 34px;
-  font-weight: 400;
-  color: #e5eeff;
-  margin-bottom: 8px;
-}
-.modal-text {
-  color: #a5b5cf;
-  font-size: 12px;
-  line-height: 1.8;
   margin-bottom: 20px;
 }
-.modal-button {
-  border: 1px solid rgba(131,186,255,.42);
-  background: rgba(86,140,207,.16);
-  color: #dceaff;
+
+.eyebrow {
+  color: #9bb8dc;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 7px;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(32px, 8vw, 43px);
+  line-height: 1;
+  margin: 0;
+  letter-spacing: .5px;
+}
+
+h1 span {
+  color: #a6d7ff;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.progress-wrap {
+  margin: 0 auto 17px;
+  max-width: 390px;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+
+.progress-track {
+  height: 3px;
+  background: rgba(255,255,255,.09);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #80caff, #d6c8ff);
+  transition: width .25s ease;
+}
+
+.game-panel {
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, rgba(22,38,62,.88), rgba(11,20,36,.94));
+  border-radius: 23px;
+  padding: 17px 13px 15px;
+  box-shadow: 0 15px 45px rgba(0,0,0,.18);
+}
+
+.level-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+  margin-bottom: 13px;
+}
+
+.level-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 23px;
+}
+
+.level-count {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.board-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  position: relative;
+  width: min(100%, 390px);
+  aspect-ratio: 1;
+  display: grid;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 15px;
+  background: rgba(4,10,20,.52);
+  border: 1px solid rgba(255,255,255,.055);
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cell {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  border-radius: 6px;
+  background: rgba(139,168,208,.075);
+  border: 1px solid rgba(169,198,235,.045);
+  transition: background .08s linear;
+}
+
+.cell.endpoint {
+  background: color-mix(in srgb, var(--endpoint-color) 19%, rgba(139,168,208,.08));
+  border: 1px solid color-mix(in srgb, var(--endpoint-color) 45%, transparent);
+}
+
+.cell.endpoint::after {
+  content: "";
+  position: absolute;
+  width: 37%;
+  height: 37%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--endpoint-color);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--endpoint-color) 50%, transparent);
+}
+
+.cell.filled {
+  background: color-mix(in srgb, var(--path-color) 13%, rgba(139,168,208,.07));
+}
+
+.line-layer {
+  position: absolute;
+  inset: 5px;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  pointer-events: none;
+  overflow: visible;
+  z-index: 3;
+}
+
+.path-line {
+  fill: none;
+  stroke: var(--path-color);
+  stroke-width: .66;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .92;
+  vector-effect: non-scaling-stroke;
+}
+
+.path-glow {
+  fill: none;
+  stroke: var(--path-color);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .12;
+  filter: blur(2px);
+  vector-effect: non-scaling-stroke;
+}
+
+.status {
+  min-height: 20px;
+  text-align: center;
+  margin: 13px 0 4px;
+  color: #b9cce6;
+  font-size: 11px;
+  letter-spacing: .2px;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.action-btn {
+  border: 1px solid rgba(164,203,255,.2);
   border-radius: 30px;
-  padding: 11px 24px;
-  font: 500 11px 'Quicksand',sans-serif;
-  letter-spacing: 1.2px;
-  cursor: pointer;
-  transition: background .2s,transform .2s;
+  background: rgba(137,190,255,.08);
+  color: #dceaff;
+  padding: 11px 19px;
+  font-size: 11px;
+  transition: transform .15s, background .15s;
 }
-.modal-button:hover { background: rgba(86,140,207,.3); }
-.modal-button:active { transform: scale(.97); }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+
+.action-btn:active {
+  transform: scale(.96);
+  background: rgba(137,190,255,.16);
 }
-@keyframes riseIn {
-  from { opacity: 0; transform: translateY(10px) scale(.98); }
+
+.hint {
+  text-align: center;
+  color: #7186a5;
+  font-size: 10px;
+  line-height: 1.7;
+  margin: 14px auto 0;
+  max-width: 300px;
+}
+
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3,7,15,.8);
+  backdrop-filter: blur(8px);
+}
+
+.modal-backdrop.show {
+  display: flex;
+}
+
+.modal {
+  width: min(100%, 350px);
+  text-align: center;
+  border: 1px solid rgba(171,206,255,.2);
+  border-radius: 23px;
+  padding: 29px 22px 23px;
+  background: linear-gradient(145deg, #172942, #0c1526);
+  animation: appear .2s ease-out;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(7px) scale(.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-@media (max-height:650px) {
-  .page { gap: 7px; }
-  .game-card { padding: 9px; border-radius: 21px; }
-  .board { width: min(100%,330px,44vh); }
-  h1 { font-size: 30px; }
-  .ornament { font-size: 10px; }
-  .bottom-ornament { font-size: 9px; }
-}
-@media (max-width:380px) {
-  .game-card { padding: 9px; }
-  .board { width: min(100%,44vh); }
-  .small-button { padding: 7px 10px; font-size: 10px; }
-}
-  </style></head>
-<body>
-<div id="stars"></div>
 
+.modal-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 35px;
+  color: #a8d8ff;
+  margin-bottom: 5px;
+}
+
+.modal h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 30px;
+  margin: 0 0 9px;
+}
+
+.modal p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 0 0 19px;
+}
+
+@media (max-width: 420px) {
+  body { padding: 17px 11px 25px; }
+  .game-panel { padding: 13px 9px 13px; border-radius: 19px; }
+  .board { gap: 3px; padding: 4px; }
+  .line-layer { inset: 4px; width: calc(100% - 8px); height: calc(100% - 8px); }
+  .topbar { margin-bottom: 21px; }
+}
+</style>
+</head>
+
+<body>
 <main class="page">
+
   <div class="topbar">
-    <button class="small-button" id="backButton">← return</button>
-    <button class="small-button" id="restartButton">restart</button>
+    <button class="small-btn" id="backBtn">← back</button>
+    <button class="small-btn" id="resetBtn">restart level</button>
   </div>
 
   <header class="heading">
-    <div class="ornament">✦　⋆　✦</div>
-    <h1>♡</h1>
-    <div class="subtitle">✧　connect the colors　✧</div>
+    <div class="eyebrow">a little birthday game</div>
+    <h1>Connect the <span>Colors ♡</span></h1>
+    <div class="subtitle">connect every pair and fill the whole board</div>
   </header>
 
   <div class="progress-wrap">
+    <div class="progress-top">
+      <span>YOUR PROGRESS</span>
+      <span id="progressText">0 / 10</span>
+    </div>
     <div class="progress-track">
-      <div class="progress-line" id="progressLine"></div>
+      <div class="progress-fill" id="progressFill"></div>
     </div>
   </div>
 
-  <section class="game-card">
-    <div class="board" id="board">
-      <svg class="paths-svg" id="pathsSvg" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+  <section class="game-panel">
+    <div class="level-row">
+      <div class="level-name" id="levelName">Level 01</div>
+      <div class="level-count" id="levelCount">LEVEL 1 OF 10</div>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board" id="board">
+        <svg class="line-layer" id="lineLayer" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <div class="controls">
+      <button class="action-btn" id="clearBtn">clear lines</button>
+      <button class="action-btn" id="nextBtn" style="display:none">next level ↗</button>
     </div>
   </section>
 
-  <div class="bottom-ornament">✧　·　✦　·　✧</div>
+  <div class="hint">drag from one dot to its matching dot ✦<br>no diagonals · fill every little square</div>
+
 </main>
 
-<div class="modal" id="modal">
-  <div class="modal-card">
-    <div class="modal-ornament">✦　✧　✦</div>
-    <div class="modal-title" id="modalTitle">♡</div>
-    <div class="modal-text" id="modalText"></div>
-    <button class="modal-button" id="modalButton">continue</button>
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-mark">✦ ♡ ✦</div>
+    <h2 id="modalTitle">level complete</h2>
+    <p id="modalText"></p>
+    <button class="action-btn" id="modalBtn">continue ↗</button>
   </div>
 </div>
 
-<script>
+<script>const board = document.getElementById('board');
+const lineLayer = document.getElementById('lineLayer');
+const statusText = document.getElementById('status');
+const nextBtn = document.getElementById('nextBtn');
+const modalBackdrop = document.getElementById('modalBackdrop');
+
 const COLORS = [
-  "#8bbdff",
-  "#d3a6ff",
-  "#8ee1d0",
-  "#f0b5cf",
-  "#f2d28e",
-  "#a8b5ff"
+  '#ff8db5',
+  '#80caff',
+  '#bba0ff',
+  '#8ce3bd',
+  '#ffd27f',
+  '#ff9c83',
+  '#8de1e8',
+  '#d9a8ff'
 ];
 
-const board = document.getElementById("board");
-const pathsSvg = document.getElementById("pathsSvg");
-const progressLine = document.getElementById("progressLine");
-const modal = document.getElementById("modal");
-const modalTitle = document.getElementById("modalTitle");
-const modalText = document.getElementById("modalText");
-const modalButton = document.getElementById("modalButton");
+const LEVELS = [
+  { size: 5, colors: 3 },
+  { size: 5, colors: 4 },
+  { size: 6, colors: 3 },
+  { size: 6, colors: 4 },
+  { size: 7, colors: 4 },
+  { size: 7, colors: 5 },
+  { size: 8, colors: 4 },
+  { size: 8, colors: 5 },
+  { size: 8, colors: 5 },
+  { size: 8, colors: 6 }
+];
 
 let level = 1;
 let size = 5;
 let paths = [];
-let cells = [];
-let drawing = null;
-let drawingFrom = null;
-let puzzleFinished = false;
-let finalUnlocked = false;
+let endpointMap = new Map();
+let activePath = null;
+let activeSide = null;
+let drawing = false;
+let completedLevels = Math.min(
+  10,
+  Math.max(0, Number(localStorage.getItem('connectcolors_completed_levels')) || 0)
+);
+let levelWon = false;
+let frameRequested = false;
 
-const NS = "http://www.w3.org/2000/svg";
+const indexOf = (r, c) => r * size + c;
+const rowOf = i => Math.floor(i / size);
+const colOf = i => i % size;
 
-function makeStars() {
-  const holder = document.getElementById("stars");
-  const symbols = ["✦", "✧", "⋆", "·"];
-
-  for (let i = 0; i < 44; i++) {
-    const star = document.createElement("span");
-    star.className = "star";
-    star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-    star.style.left = Math.random() * 100 + "%";
-    star.style.top = Math.random() * 100 + "%";
-    star.style.fontSize = (5 + Math.random() * 11) + "px";
-    star.style.setProperty("--duration", (2.8 + Math.random() * 4.5) + "s");
-    star.style.setProperty("--delay", (-Math.random() * 5) + "s");
-    holder.appendChild(star);
-  }
-}
-
-function cellId(row, col) {
-  return row * size + col;
-}
-
-function coordinates(id) {
-  return {
-    row: Math.floor(id / size),
-    col: id % size
-  };
-}
-
-function neighbors(id) {
-  const { row, col } = coordinates(id);
-  const result = [];
-
-  if (row > 0) result.push(cellId(row - 1, col));
-  if (row < size - 1) result.push(cellId(row + 1, col));
-  if (col > 0) result.push(cellId(row, col - 1));
-  if (col < size - 1) result.push(cellId(row, col + 1));
-
-  return result;
-}
-
-function buildSnakeRoute() {
+function snakeRoute(n) {
   const route = [];
-  const columnMode = Math.random() < 0.5;
 
-  if (!columnMode) {
-    for (let r = 0; r < size; r++) {
-      if (r % 2 === 0) {
-        for (let c = 0; c < size; c++) route.push(cellId(r, c));
-      } else {
-        for (let c = size - 1; c >= 0; c--) route.push(cellId(r, c));
-      }
-    }
-  } else {
-    for (let c = 0; c < size; c++) {
-      if (c % 2 === 0) {
-        for (let r = 0; r < size; r++) route.push(cellId(r, c));
-      } else {
-        for (let r = size - 1; r >= 0; r--) route.push(cellId(r, c));
-      }
+  for (let r = 0; r < n; r++) {
+    if (r % 2 === 0) {
+      for (let c = 0; c < n; c++) route.push(r * n + c);
+    } else {
+      for (let c = n - 1; c >= 0; c--) route.push(r * n + c);
     }
   }
 
-  if (Math.random() < 0.5) route.reverse();
   return route;
 }
 
 function generatePuzzle() {
-  size = level <= 3 ? 5 : level <= 6 ? 6 : 7;
+  size = LEVELS[level - 1].size;
+  const colorCount = LEVELS[level - 1].colors;
+  const route = snakeRoute(size);
+  const total = route.length;
+  const base = Math.floor(total / colorCount);
+  let extra = total % colorCount;
+  let offset = 0;
 
-  const route = buildSnakeRoute();
-  const total = size * size;
-  const count = Math.min(2 + Math.floor((level - 1) / 2), 6);
-  const cuts = [];
-  const minLength = 4;
+  paths = [];
 
-  for (let i = 1; i < count; i++) {
-    const ideal = Math.round(total * i / count);
-    const low = (cuts.length ? cuts[cuts.length - 1] : 0) + minLength;
-    const high = total - (count - i) * minLength;
-    const jitter = Math.floor(Math.random() * 5) - 2;
+  for (let i = 0; i < colorCount; i++) {
+    const length = base + (extra-- > 0 ? 1 : 0);
+    const solution = route.slice(offset, offset + length);
+    offset += length;
 
-    cuts.push(Math.max(low, Math.min(high, ideal + jitter)));
-  }
-
-  const bounds = [0, ...cuts, total];
-  const generated = [];
-
-  for (let i = 0; i < count; i++) {
-    const solution = route.slice(bounds[i], bounds[i + 1]);
-
-    generated.push({
+    paths.push({
+      id: i,
       color: COLORS[i],
-      start: solution[0],
-      end: solution[solution.length - 1],
       solution,
       cells: [],
       connected: false
     });
   }
 
-  return generated;
+  endpointMap = new Map();
+
+  paths.forEach(path => {
+    endpointMap.set(path.solution[0], { id: path.id, side: 0 });
+    endpointMap.set(path.solution[path.solution.length - 1], {
+      id: path.id,
+      side: 1
+    });
+  });
 }
 
-function createSvgElement(name, attrs = {}) {
-  const element = document.createElementNS(NS, name);
+function startLevel() {
+  level = Math.min(10, Math.max(1, level));
+  levelWon = false;
+  drawing = false;
+  activePath = null;
+  activeSide = null;
 
-  for (const [key, value] of Object.entries(attrs)) {
-    element.setAttribute(key, value);
-  }
+  generatePuzzle();
 
-  return element;
-}
+  board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
+  board.style.gridTemplateRows = `repeat(${size}, minmax(0, 1fr))`;
+  board.style.aspectRatio = '1';
 
-function pointForCell(id) {
-  const { row, col } = coordinates(id);
-
-  return {
-    x: ((col + 0.5) / size) * 100,
-    y: ((row + 0.5) / size) * 100
-  };
-}
-
-function hexToRgba(hex, alpha) {
-  const clean = hex.replace("#", "");
-  const value = parseInt(clean, 16);
-  const r = (value >> 16) & 255;
-  const g = (value >> 8) & 255;
-  const b = value & 255;
-
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-function renderBoard() {
-  board.querySelectorAll(".cell").forEach(el => el.remove());
-  pathsSvg.innerHTML = "";
-  cells = [];
-
-  board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-  board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+  board.querySelectorAll('.cell').forEach(cell => cell.remove());
 
   for (let i = 0; i < size * size; i++) {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-    cell.dataset.id = i;
-    cell.addEventListener("pointerdown", startDrawing);
-    board.insertBefore(cell, pathsSvg);
-    cells.push(cell);
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.dataset.index = i;
+
+    const endpoint = endpointMap.get(i);
+
+    if (endpoint) {
+      const path = paths[endpoint.id];
+      cell.classList.add('endpoint');
+      cell.style.setProperty('--endpoint-color', path.color);
+    }
+
+    board.insertBefore(cell, lineLayer);
   }
 
-  updateBoard();
+  lineLayer.setAttribute('viewBox', `0 0 ${size} ${size}`);
+  lineLayer.innerHTML = '';
+
+  paths.forEach(path => {
+    path.cells = [];
+    path.connected = false;
+  });
+
+  document.getElementById('levelName').textContent =
+    `Level ${String(level).padStart(2, '0')}`;
+
+  document.getElementById('levelCount').textContent =
+    `LEVEL ${level} OF 10`;
+
+  nextBtn.style.display = 'none';
+  statusText.textContent = '';
+  updateProgress();
+  renderLines();
 }
 
-function updateBoard() {
-  for (const cell of cells) {
-    cell.classList.remove("occupied", "endpoint");
-    cell.style.background = "";
-  }
+function updateProgress() {
+  document.getElementById('progressText').textContent =
+    `${completedLevels} / 10`;
 
-  for (const path of paths) {
-    for (const id of path.cells) {
-      const cell = cells[id];
+  document.getElementById('progressFill').style.width =
+    `${completedLevels * 10}%`;
+}
 
+function clearLines() {
+  if (levelWon) return;
+
+  paths.forEach(path => {
+    path.cells = [];
+    path.connected = false;
+  });
+
+  activePath = null;
+  activeSide = null;
+  drawing = false;
+  statusText.textContent = '';
+  renderLines();
+}
+
+function renderLines() {
+  lineLayer.innerHTML = '';
+
+  board.querySelectorAll('.cell').forEach(cell => {
+    cell.classList.remove('filled');
+    cell.style.removeProperty('--path-color');
+  });
+
+  paths.forEach(path => {
+    const cells = path.cells;
+
+    cells.forEach(index => {
+      const cell = board.querySelector(`[data-index="${index}"]`);
       if (cell) {
-        cell.classList.add("occupied");
-        cell.style.background = hexToRgba(path.color, .12);
+        cell.classList.add('filled');
+        cell.style.setProperty('--path-color', path.color);
       }
-    }
+    });
 
-    for (const id of [path.start, path.end]) {
-      const cell = cells[id];
+    if (cells.length < 2) return;
 
-      if (cell) {
-        cell.classList.add("endpoint");
-        cell.style.background = hexToRgba(path.color, .1);
-      }
-    }
-  }
+    const points = cells.map(index =>
+      `${colOf(index) + 0.5},${rowOf(index) + 0.5}`
+    ).join(' ');
 
-  drawPaths();
+    const glow = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    glow.setAttribute('points', points);
+    glow.setAttribute('class', 'path-glow');
+    glow.style.setProperty('--path-color', path.color);
+    lineLayer.appendChild(glow);
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    line.setAttribute('points', points);
+    line.setAttribute('class', 'path-line');
+    line.style.setProperty('--path-color', path.color);
+    lineLayer.appendChild(line);
+  });
 }
 
-function drawPaths() {
-  pathsSvg.innerHTML = "";
+function getCellAt(x, y) {
+  const rect = board.getBoundingClientRect();
+  const styles = getComputedStyle(board);
+  const padding = parseFloat(styles.paddingLeft) || 0;
 
-  for (const path of paths) {
-    if (path.cells.length > 1) {
-      const points = path.cells.map(pointForCell);
-      const d = points.map((p, i) =>
-        `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`
-      ).join(" ");
+  const left = rect.left + padding;
+  const top = rect.top + padding;
+  const width = rect.width - padding * 2;
+  const height = rect.height - padding * 2;
 
-      const line = createSvgElement("path", {
-        d,
-        class: "path-line" + (puzzleFinished ? " completed" : ""),
-        stroke: path.color
-      });
+  const col = Math.floor(((x - left) / width) * size);
+  const row = Math.floor(((y - top) / height) * size);
 
-      pathsSvg.appendChild(line);
-    }
+  if (row < 0 || col < 0 || row >= size || col >= size) return null;
 
-    for (const id of [path.start, path.end]) {
-      const p = pointForCell(id);
-
-      const ball = createSvgElement("circle", {
-        cx: p.x,
-        cy: p.y,
-        r: 3.8,
-        fill: path.color,
-        class: "endpoint-ball"
-      });
-
-      pathsSvg.appendChild(ball);
-    }
-  }
-}function getPathAtEndpoint(id) {
-  return paths.find(path => path.start === id || path.end === id);
+  return indexOf(row, col);
 }
 
-function pathOwner(id) {
-  return paths.find(path => path.cells.includes(id));
+function adjacent(a, b) {
+  return Math.abs(rowOf(a) - rowOf(b)) +
+         Math.abs(colOf(a) - colOf(b)) === 1;
 }
 
-function startDrawing(event) {
-  if (puzzleFinished) return;
+function beginPath(index) {
+  if (levelWon) return;
 
-  const id = Number(event.currentTarget.dataset.id);
-  const path = getPathAtEndpoint(id);
+  const endpoint = endpointMap.get(index);
+  if (!endpoint) return;
 
-  if (!path) return;
+  const path = paths[endpoint.id];
 
   if (path.connected) {
     path.cells = [];
     path.connected = false;
   }
 
-  for (const other of paths) {
-    if (other !== path && other.cells.includes(id)) return;
-  }
+  activePath = path;
+  activeSide = endpoint.side;
+  drawing = true;
 
-  drawing = path;
-  drawingFrom = id === path.start ? "start" : "end";
-  drawing.cells = [id];
+  const start = activeSide === 0
+    ? path.solution[0]
+    : path.solution[path.solution.length - 1];
 
-  event.preventDefault();
-  updateBoard();
+  path.cells = [start];
+  statusText.textContent = '';
+  renderLines();
 }
 
-function getCellFromPointer(event) {
-  const element = document.elementFromPoint(event.clientX, event.clientY);
+function moveToCell(index) {
+  if (!drawing || !activePath || levelWon) return;
 
-  if (!element) return null;
+  const cells = activePath.cells;
+  const last = cells[cells.length - 1];
 
-  const cell = element.closest(".cell");
+  if (index === last) return;
 
-  if (!cell || !board.contains(cell)) return null;
-
-  return Number(cell.dataset.id);
-}
-
-function pointerMove(event) {
-  if (!drawing || puzzleFinished) return;
-
-  const id = getCellFromPointer(event);
-  if (id === null || id === undefined) return;
-
-  const list = drawing.cells;
-  const last = list[list.length - 1];
-
-  if (id === last) return;
-
-  if (list.length > 1 && id === list[list.length - 2]) {
-    list.pop();
-    updateBoard();
+  // Dragging backwards removes the last segment.
+  if (cells.length > 1 && index === cells[cells.length - 2]) {
+    cells.pop();
+    activePath.connected = false;
+    renderLines();
     return;
   }
 
-  if (!neighbors(last).includes(id)) return;
+  if (!adjacent(last, index)) return;
 
-  const target = drawingFrom === "start" ? drawing.end : drawing.start;
-
-  if (id !== target) {
-    const endpoint = getPathAtEndpoint(id);
-    if (endpoint && endpoint !== drawing) return;
-
-    const owner = pathOwner(id);
-    if (owner && owner !== drawing) return;
-
-    if (list.includes(id)) return;
-
-    list.push(id);
-    updateBoard();
-    return;
+  // Don't cross another color's line or reuse one of its cells.
+  for (const path of paths) {
+    if (path.id !== activePath.id && path.cells.includes(index)) return;
   }
 
-  if (list.includes(id)) return;
+  // Only the matching endpoint can finish this line.
+  const endpoint = endpointMap.get(index);
 
-  const owner = pathOwner(id);
-  if (owner && owner !== drawing) return;
+  if (endpoint && endpoint.id !== activePath.id) return;
 
-  list.push(id);
-  drawing.connected = true;
-  drawing = null;
-  drawingFrom = null;
+  if (cells.includes(index)) return;
 
-  updateBoard();
-  checkCompletion();
+  cells.push(index);
+
+  if (endpoint && endpoint.id === activePath.id) {
+    const correctEnd = activeSide === 0
+      ? activePath.solution[activePath.solution.length - 1]
+      : activePath.solution[0];
+
+    if (index === correctEnd) {
+      activePath.connected = true;
+      drawing = false;
+      activePath = null;
+      activeSide = null;
+      renderLines();
+      checkCompletion();
+      return;
+    }
+  }
+
+  renderLines();
 }
 
 function finishDrawing() {
   if (!drawing) return;
 
-  const path = drawing;
-  const target = drawingFrom === "start" ? path.end : path.start;
-  const connected = path.cells[path.cells.length - 1] === target;
+  drawing = false;
 
-  if (!connected) {
-    path.cells = [];
-    path.connected = false;
+  if (activePath && !activePath.connected) {
+    // Keep the partial line so the player can continue it.
+    statusText.textContent = 'keep going ✦';
   }
 
-  drawing = null;
-  drawingFrom = null;
-  updateBoard();
+  activePath = null;
+  activeSide = null;
 }
-
-document.addEventListener("pointermove", pointerMove);
-document.addEventListener("pointerup", finishDrawing);
-document.addEventListener("pointercancel", finishDrawing);
 
 function checkCompletion() {
-  if (paths.some(path => !path.connected)) return;
+  const allConnected = paths.every(path => path.connected);
 
-  const used = new Set();
+  if (!allConnected) return;
 
-  for (const path of paths) {
-    for (const id of path.cells) used.add(id);
+  const occupied = new Set(paths.flatMap(path => path.cells));
+  const total = size * size;
+
+  if (occupied.size !== total) {
+    statusText.textContent = 'almostt, you need to fill up the entire board';
+    return;
   }
 
-  if (used.size !== size * size) return;
-
-  puzzleFinished = true;
-  progressLine.style.width = "100%";
-  progressLine.classList.add("pulse");
-  drawPaths();
-
-  setTimeout(() => {
-    if (level >= 10) {
-      finalUnlocked = true;
-      modalTitle.textContent = "picrews";
-      modalText.textContent = "you did it. everything is connected.";
-      modalButton.textContent = "unlock";
-    } else {
-      modalTitle.textContent = "♡";
-      modalText.textContent = "everything is connected.";
-      modalButton.textContent = "continue";
-    }
-
-    modal.classList.add("show");
-  }, 650);
+  winLevel();
 }
 
-function updateProgress() {
-  progressLine.classList.remove("pulse");
-  progressLine.style.width = `${((level - 1) / 10) * 100}%`;
-}
+function winLevel() {
+  if (levelWon) return;
 
-function startLevel() {
-  puzzleFinished = false;
-  drawing = null;
-  drawingFrom = null;
-
-  modal.classList.remove("show");
-  paths = generatePuzzle();
-
+  levelWon = true;
+  completedLevels = Math.max(completedLevels, level);
+  localStorage.setItem('connectcolors_completed_levels', String(completedLevels));
   updateProgress();
-  renderBoard();
+
+  if (completedLevels >= 10) {
+    unlockPicrews();
+    document.getElementById('modalTitle').textContent = 'yayyy ♡';
+    document.getElementById('modalText').textContent =
+      'yayyy you unlocked the picrews';
+    document.getElementById('modalBtn').textContent = 'done ♡';
+    nextBtn.style.display = 'none';
+  } else {
+    statusText.textContent = 'perfect, you did it ♡';
+    nextBtn.style.display = 'inline-block';
+    document.getElementById('modalTitle').textContent = 'level complete';
+    document.getElementById('modalText').textContent =
+      'you connected everything ♡ ready for the next one?';
+    document.getElementById('modalBtn').textContent = 'next level ↗';
+  }
+
+  modalBackdrop.classList.add('show');
+}
+
+function unlockPicrews() {
+  localStorage.setItem('picrewsUnlocked', 'true');
+  localStorage.setItem('arcade_picrews_unlocked', 'true');
+
+  let rewards = [];
+
+  try {
+    rewards = JSON.parse(localStorage.getItem('birthday_unlocked_rewards') || '[]');
+    if (!Array.isArray(rewards)) rewards = [];
+  } catch {
+    rewards = [];
+  }
+
+  if (!rewards.includes('picrews')) {
+    rewards.push('picrews');
+  }
+
+  localStorage.setItem('birthday_unlocked_rewards', JSON.stringify(rewards));
 }
 
 function nextLevel() {
-  modal.classList.remove("show");
+  modalBackdrop.classList.remove('show');
 
-  if (finalUnlocked && level >= 10) {
-    localStorage.setItem("picrewsUnlocked", "true");
-    localStorage.setItem("arcade_picrews_unlocked", "true");
-    window.location.href = "inventory.html";
-    return;
-  }
+  if (completedLevels >= 10) return;
 
   level = Math.min(10, level + 1);
   startLevel();
 }
 
-function restartLevel() {
-  if (modal.classList.contains("show")) return;
-  startLevel();
-}
+board.addEventListener('pointerdown', event => {
+  if (levelWon) return;
 
-document.getElementById("restartButton").addEventListener("click", restartLevel);
+  const index = getCellAt(event.clientX, event.clientY);
+  if (index === null) return;
 
-document.getElementById("backButton").addEventListener("click", () => {
-  if (history.length > 1) {
-    history.back();
-  } else {
-    window.location.href = "index.html";
+  if (endpointMap.has(index)) {
+    beginPath(index);
+    board.setPointerCapture(event.pointerId);
+    event.preventDefault();
   }
 });
 
-modalButton.addEventListener("click", nextLevel);
+board.addEventListener('pointermove', event => {
+  if (!drawing) return;
 
-makeStars();
+  const index = getCellAt(event.clientX, event.clientY);
+  if (index !== null) moveToCell(index);
+
+  event.preventDefault();
+});
+
+board.addEventListener('pointerup', finishDrawing);
+board.addEventListener('pointercancel', finishDrawing);
+
+document.getElementById('clearBtn').addEventListener('click', clearLines);
+document.getElementById('resetBtn').addEventListener('click', startLevel);
+
+nextBtn.addEventListener('click', nextLevel);
+
+document.getElementById('modalBtn').addEventListener('click', () => {
+  if (completedLevels >= 10) {
+    modalBackdrop.classList.remove('show');
+    return;
+  }
+
+  nextLevel();
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  if (history.length > 1) {
+    history.back();
+  } else {
+    statusText.textContent = 'you can close this page to go back ♡';
+  }
+});
+
 startLevel();
 </script>
 </body>
-</html>
+  </html>

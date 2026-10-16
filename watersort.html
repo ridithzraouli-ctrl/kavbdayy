@@ -7,247 +7,42 @@
 <title>Water Sort</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #080d18;
-  --blue: #8db9ff;
-  --text: #e8efff;
-  --border: rgba(144,184,255,.24);
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-
-body {
-  background: radial-gradient(ellipse at 50% 45%, #142642 0%, #0b1425 45%, #080d18 85%);
-  color: var(--text);
-  font-family: 'Quicksand', sans-serif;
-}
-
-#app {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100dvh;
-  min-height: 0;
-  overflow: hidden;
-  padding: 15px 16px 18px;
-}
-
-.stars {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.star {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  border-radius: 50%;
-  background: #b9d5ff;
-  opacity: .35;
-  animation: twinkle 3s ease-in-out infinite alternate;
-}
-
-@keyframes twinkle {
-  from { opacity: .12; transform: scale(.7); }
-  to { opacity: .65; transform: scale(1.3); }
-}
-
-.topbar {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.nav-link, .restart {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 36px;
-  padding: 7px 13px;
-  color: var(--text);
-  font: 500 12px 'Quicksand', sans-serif;
-  text-decoration: none;
-  background: rgba(16,29,49,.78);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.nav-link:active, .restart:active {
-  transform: scale(.96);
-}
-
-.progress-area {
-  position: relative;
-  z-index: 1;
-  width: min(260px, 72vw);
-  margin: 15px auto 0;
-  flex-shrink: 0;
-}
-
-.level-counter {
-  min-height: 27px;
-  text-align: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: 1px;
-}
-
-.progress-track {
-  height: 3px;
-  width: 100%;
-  margin-top: 7px;
-  overflow: hidden;
-  background: rgba(150,190,255,.12);
-  border-radius: 10px;
-}
-
-.progress-fill {
-  width: 3.33%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #6498f0, #c0d9ff);
-  transition: width .35s ease;
-}
-
-.game-area {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 0;
-  overflow: hidden;
-  padding: 10px 0;
-}
-
-.bottle-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(18px, 4vh, 30px) clamp(13px, 4vw, 24px);
-  width: 100%;
-  max-width: 520px;
-  max-height: 100%;
-  margin: auto;
-}
-
-.bottle {
-  position: relative;
-  flex: 0 0 auto;
-  width: clamp(39px, 10vw, 54px);
-  height: clamp(116px, 20vh, 150px);
-  padding: 0;
-  border: 2px solid rgba(190,216,255,.58);
-  border-top: 0;
-  border-radius: 0 0 19px 19px;
-  background: linear-gradient(90deg, rgba(255,255,255,.035), rgba(160,200,255,.07) 28%, rgba(255,255,255,.012) 70%, rgba(180,210,255,.075));
-  box-shadow: inset 4px 0 7px rgba(255,255,255,.035), inset -4px 0 7px rgba(0,0,0,.14), 0 8px 16px rgba(0,0,0,.12);
-  cursor: pointer;
-  transition: transform .2s ease, border-color .2s ease;
-  overflow: visible;
-}
-
-.bottle::before {
-  content: "";
-  position: absolute;
-  z-index: 4;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  height: 9px;
-  border: 2px solid rgba(190,216,255,.7);
-  border-radius: 5px;
-  background: #101d32;
-}
-
-.bottle.selected {
-  transform: translateY(-10px);
-  border-color: #c0dcff;
-  box-shadow: 0 0 17px rgba(111,167,255,.3);
-}
-
-.bottle.invalid {
-  animation: shake .24s ease;
-}
-
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
-}
-
-.liquid {
-  position: absolute;
-  inset: 5px 2px 2px;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-start;
-  overflow: hidden;
-  border-radius: 0 0 15px 15px;
-}
-
-.segment {
-  position: relative;
-  flex: 0 0 25%;
-  width: 100%;
-  min-height: 0;
-  margin: 0;
-  overflow: hidden;
-  isolation: isolate;
-  background-image: linear-gradient(90deg, rgba(255,255,255,.17), rgba(255,255,255,.035) 30%, rgba(0,0,0,.045) 72%, rgba(255,255,255,.09));
-}
-
-.segment:first-child {
-  border-radius: 0 0 12px 12px;
-}
-
-.segment.top-liquid {
-  border-radius: 50% 50% 0 0 / 7px 7px 0 0;
-}
-
-.segment.top-liquid::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: -8%;
-  top: -3px;
-  width: 116%;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.28);
-  box-shadow: 0 1px 4px rgba(255,255,255,.12);
-}
-
-.segment::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,.07), transparent 35%, rgba(0,0,0,.08));
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;margin:0;overflow:hidden}
+body{background:radial-gradient(ellipse at center,#142642,#080d18 85%);color:#e8efff;font-family:'Quicksand',sans-serif}
+#app{position:relative;display:flex;flex-direction:column;width:100%;height:100dvh;padding:15px 16px 18px;overflow:hidden}
+.stars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#b9d5ff;animation:twinkle 3s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.12}to{opacity:.65}}
+.topbar{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.nav-link,.restart{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:7px 13px;color:#e8efff;font:500 12px 'Quicksand',sans-serif;text-decoration:none;background:rgba(16,29,49,.85);border:1px solid rgba(144,184,255,.24);border-radius:20px;cursor:pointer}
+.progress-area{position:relative;z-index:1;width:min(260px,72vw);margin:15px auto 0;flex-shrink:0}
+.level-counter{text-align:center;font-family:'Cormorant Garamond',serif;font-size:22px;min-height:27px;letter-spacing:1px}
+.progress-track{height:3px;width:100%;margin-top:7px;background:rgba(150,190,255,.12);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;width:3.33%;background:linear-gradient(90deg,#6498f0,#c0d9ff);transition:width .35s}
+.game-area{position:relative;z-index:1;display:flex;flex:1;align-items:center;justify-content:center;width:100%;min-height:0;overflow:hidden;padding:10px 0}
+.bottle-grid{display:flex;flex-wrap:wrap;align-content:center;justify-content:center;align-items:center;gap:clamp(18px,4vh,30px) clamp(13px,4vw,24px);width:100%;max-width:520px;margin:auto}
+.bottle{position:relative;flex:0 0 auto;width:clamp(39px,10vw,54px);height:clamp(116px,20vh,150px);padding:0;border:2px solid rgba(190,216,255,.58);border-top:0;border-radius:0 0 19px 19px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(160,200,255,.07) 28%,rgba(255,255,255,.012) 70%,rgba(180,210,255,.075));box-shadow:inset 4px 0 7px rgba(255,255,255,.035),inset -4px 0 7px rgba(0,0,0,.14),0 8px 16px rgba(0,0,0,.12);cursor:pointer;transition:transform .2s,border-color .2s;overflow:visible}
+.bottle::before{content:"";position:absolute;z-index:4;top:-3px;left:-3px;right:-3px;height:9px;border:2px solid rgba(190,216,255,.7);border-radius:5px;background:#101d32}
+.bottle.selected{transform:translateY(-10px);border-color:#c0dcff;box-shadow:0 0 17px rgba(111,167,255,.3)}
+.bottle.invalid{animation:shake .24s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.liquid{position:absolute;inset:5px 2px 2px;display:flex;flex-direction:column-reverse;justify-content:flex-start;overflow:hidden;border-radius:0 0 15px 15px}
+.segment{position:relative;flex:0 0 25%;width:100%;min-height:0;margin:0;overflow:hidden;isolation:isolate;background-image:linear-gradient(90deg,rgba(255,255,255,.17),rgba(255,255,255,.035) 30%,rgba(0,0,0,.045) 72%,rgba(255,255,255,.09))}
+.segment:first-child{border-radius:0 0 12px 12px}
+.segment.top-liquid{border-radius:50% 50% 0 0 / 7px 7px 0 0}
+.segment.top-liquid::before{content:"";position:absolute;z-index:2;left:-8%;top:-3px;width:116%;height:8px;border-radius:50%;background:rgba(255,255,255,.28)}
+.segment::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.07),transparent 35%,rgba(0,0,0,.08))}
+.modal-overlay{position:fixed;inset:0;z-index:10;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(3,7,15,.7);backdrop-filter:blur(9px)}
+.modal-overlay.show{display:flex;animation:fadeIn .22s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;width:min(290px,86vw);min-height:150px;padding:28px 22px;border:1px solid rgba(150,192,255,.35);border-radius:22px;background:linear-gradient(145deg,#152743,#0b1424);box-shadow:0 18px 60px rgba(0,0,0,.35);animation:popIn .3s}
+@keyframes popIn{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+.modal-title{margin:0;color:#c7ddff;font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:500;letter-spacing:2px}
+.next-button{min-width:105px;padding:10px 22px;border:1px solid rgba(170,205,255,.45);border-radius:24px;background:rgba(111,158,232,.16);color:#e8efff;font:600 12px 'Quicksand',sans-serif;cursor:pointer}
+@media(max-height:600px){#app{padding:9px 12px}.progress-area{margin-top:7px}.level-counter{font-size:19px}.bottle-grid{gap:12px 15px}.bottle{width:clamp(32px,7vw,44px);height:clamp(82px,17vh,108px)}}
+@media(min-width:600px){.bottle-grid{max-width:520px}.bottle{width:52px;height:145px}}
+@media(max-width:360px){#app{padding-left:10px;padding-right:10px}.bottle-grid{column-gap:11px;row-gap:16px}.bottle{width:36px;height:112px}}
 </style>
 </head>
 <body>
@@ -259,131 +54,28 @@ body {
   </header>
   <div class="progress-area">
     <div class="level-counter" id="levelCounter">1/30</div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
   </div>
-  <main class="game-area">
-    <div class="bottle-grid" id="bottleGrid"></div>
-  </main>
+  <main class="game-area"><div class="bottle-grid" id="bottleGrid"></div></main>
 </div>
-
 <div class="modal-overlay" id="winModal">
   <div class="modal">
     <h1 class="modal-title" id="modalTitle">YAY</h1>
     <button class="next-button" id="nextButton" type="button">next</button>
   </div>
 </div>
-
-<style>
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(3,7,15,.7);
-  backdrop-filter: blur(9px);
-}
-
-.modal-overlay.show {
-  display: flex;
-  animation: fadeIn .22s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.modal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  width: min(290px, 86vw);
-  min-height: 150px;
-  padding: 28px 22px;
-  border: 1px solid rgba(150,192,255,.35);
-  border-radius: 22px;
-  background: linear-gradient(145deg, #152743, #0b1424);
-  box-shadow: 0 18px 60px rgba(0,0,0,.35);
-  animation: popIn .3s cubic-bezier(.2,.8,.2,1);
-}
-
-@keyframes popIn {
-  from { opacity: 0; transform: scale(.86); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.modal-title {
-  margin: 0;
-  color: #c7ddff;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 38px;
-  font-weight: 500;
-  letter-spacing: 2px;
-}
-
-.next-button {
-  min-width: 105px;
-  padding: 10px 22px;
-  border: 1px solid rgba(170,205,255,.45);
-  border-radius: 24px;
-  background: rgba(111,158,232,.16);
-  color: var(--text);
-  font: 600 12px 'Quicksand', sans-serif;
-  cursor: pointer;
-}
-
-.next-button:active {
-  transform: scale(.96);
-}
-
-@media (max-height: 600px) {
-  #app { padding: 9px 12px; }
-  .progress-area { margin-top: 7px; }
-  .level-counter { font-size: 19px; }
-  .bottle-grid { gap: 12px 15px; }
-  .bottle {
-    width: clamp(32px, 7vw, 44px);
-    height: clamp(82px, 17vh, 108px);
-  }
-}
-
-@media (min-width: 600px) {
-  .bottle-grid { max-width: 520px; }
-  .bottle {
-    width: 52px;
-    height: 145px;
-  }
-}
-
-@media (max-width: 360px) {
-  #app { padding-left: 10px; padding-right: 10px; }
-  .bottle-grid { column-gap: 11px; row-gap: 16px; }
-  .bottle {
-    width: 36px;
-    height: 112px;
-  }
-}
-</style>
-
 <script>
+  
 (() => {
   const TOTAL_LEVELS = 30;
   const CAPACITY = 4;
   const LEVEL_KEY = 'birthday_water_sort_level';
   const REWARDS_KEY = 'birthday_unlocked_rewards';
   const COMPLETE_KEY = 'birthday_water_sort_complete';
-
   const colors = [
-    '#6495ed', '#72d4d0', '#a38bff', '#ef91bd',
-    '#f3c96e', '#80c99b', '#e98b7c', '#8ca8e8',
-    '#c3a0ee', '#6bb8e7', '#d6a3a0', '#b6d78b'
+    '#6495ed','#72d4d0','#a38bff','#ef91bd',
+    '#f3c96e','#80c99b','#e98b7c','#8ca8e8',
+    '#c3a0ee','#6bb8e7','#d6a3a0','#b6d78b'
   ];
 
   const grid = document.getElementById('bottleGrid');
@@ -404,264 +96,207 @@ body {
     try {
       audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
       if (audioContext.state === 'suspended') audioContext.resume();
-
       const now = audioContext.currentTime;
       const oscillator = audioContext.createOscillator();
       const gain = audioContext.createGain();
-      const notes = {
-        select: [520, 0.07],
-        pour: [420, 0.12],
-        win: [720, 0.24],
-        invalid: [180, 0.09]
-      };
-
-      const [frequency, duration] = notes[type] || notes.select;
+      const notes = {select:[520,.07],pour:[420,.12],win:[720,.24],invalid:[180,.09]};
+      const [frequency,duration] = notes[type] || notes.select;
       oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(frequency, now);
-
-      if (type === 'win') {
-        oscillator.frequency.setValueAtTime(880, now + 0.1);
-      }
-
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.09, now + 0.015);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
+      oscillator.frequency.setValueAtTime(frequency,now);
+      if (type === 'win') oscillator.frequency.setValueAtTime(880,now+.1);
+      gain.gain.setValueAtTime(.0001,now);
+      gain.gain.exponentialRampToValueAtTime(.09,now+.015);
+      gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
       oscillator.connect(gain);
       gain.connect(audioContext.destination);
       oscillator.start(now);
-      oscillator.stop(now + duration + 0.02);
+      oscillator.stop(now+duration+.02);
     } catch (error) {}
   }
 
   function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    for (let i=array.length-1;i>0;i--) {
+      const j=Math.floor(Math.random()*(i+1));
+      [array[i],array[j]]=[array[j],array[i]];
     }
     return array;
   }
 
   function createPuzzle(levelNumber) {
-    const colorCount = Math.min(
-      2 + Math.floor((levelNumber - 1) / 3),
-      colors.length
-    );
-
-    const pool = [];
-
-    for (let color = 0; color < colorCount; color++) {
-      for (let count = 0; count < CAPACITY; count++) {
-        pool.push(color);
-      }
+    const colorCount=Math.min(2+Math.floor((levelNumber-1)/3),colors.length);
+    const pool=[];
+    for(let color=0;color<colorCount;color++) {
+      for(let count=0;count<CAPACITY;count++) pool.push(color);
     }
 
     let mixed;
-    let attempts = 0;
-
+    let attempts=0;
     do {
-      mixed = shuffle([...pool]);
+      mixed=shuffle([...pool]);
       attempts++;
     } while (
-      attempts < 100 &&
-      Array.from({ length: colorCount }, (_, i) =>
-        mixed.slice(i * CAPACITY, (i + 1) * CAPACITY)
-      ).some(tube => tube.every(value => value === tube[0]))
+      attempts<100 &&
+      Array.from({length:colorCount},(_,i)=>mixed.slice(i*4,(i+1)*4))
+        .some(tube=>tube.every(value=>value===tube[0]))
     );
 
-    const puzzle = [];
-
-    for (let i = 0; i < colorCount; i++) {
-      puzzle.push(mixed.slice(i * CAPACITY, (i + 1) * CAPACITY));
-    }
-
+    const puzzle=[];
+    for(let i=0;i<colorCount;i++) puzzle.push(mixed.slice(i*4,(i+1)*4));
     puzzle.push([]);
     puzzle.push([]);
-
     return puzzle;
   }
- </script>
- 
+
   function cloneBottles(source) {
-    return source.map(bottle => [...bottle]);
+    return source.map(bottle=>[...bottle]);
   }
 
   function updateProgress() {
-    if (level <= TOTAL_LEVELS) {
-      levelCounter.textContent = `${level}/${TOTAL_LEVELS}`;
-      progressFill.style.width = `${level / TOTAL_LEVELS * 100}%`;
+    if(level<=TOTAL_LEVELS) {
+      levelCounter.textContent=`${level}/${TOTAL_LEVELS}`;
+      progressFill.style.width=`${level/TOTAL_LEVELS*100}%`;
     } else {
-      levelCounter.textContent = 'yayyy you unlocked the letters';
-      progressFill.style.width = '100%';
+      levelCounter.textContent='yayyy you unlocked the letters';
+      progressFill.style.width='100%';
     }
   }
 
   function saveProgress() {
-    localStorage.setItem(LEVEL_KEY, String(level));
-    if (level >= TOTAL_LEVELS) {
-      localStorage.setItem(COMPLETE_KEY, 'true');
-    }
+    localStorage.setItem(LEVEL_KEY,String(level));
+    if(level>=TOTAL_LEVELS) localStorage.setItem(COMPLETE_KEY,'true');
   }
 
   function unlockReward(id) {
-    let rewards = [];
-
+    let rewards=[];
     try {
-      rewards = JSON.parse(localStorage.getItem(REWARDS_KEY) || '[]');
-    } catch (error) {
-      rewards = [];
+      rewards=JSON.parse(localStorage.getItem(REWARDS_KEY)||'[]');
+    } catch(error) {
+      rewards=[];
     }
-
-    if (!rewards.includes(id)) {
+    if(!rewards.includes(id)) {
       rewards.push(id);
-      localStorage.setItem(REWARDS_KEY, JSON.stringify(rewards));
-      window.dispatchEvent(new CustomEvent('birthday-reward-unlocked', {
-        detail: { id }
-      }));
+      localStorage.setItem(REWARDS_KEY,JSON.stringify(rewards));
+      window.dispatchEvent(new CustomEvent('birthday-reward-unlocked',{detail:{id}}));
     }
   }
 
-  window.getBirthdayRewards = function() {
+  window.getBirthdayRewards=function() {
     try {
-      return JSON.parse(localStorage.getItem(REWARDS_KEY) || '[]');
-    } catch (error) {
+      return JSON.parse(localStorage.getItem(REWARDS_KEY)||'[]');
+    } catch(error) {
       return [];
     }
   };
-
-  window.unlockBirthdayReward = unlockReward;
-
-  window.isBirthdayRewardUnlocked = function(id) {
+  window.unlockBirthdayReward=unlockReward;
+  window.isBirthdayRewardUnlocked=function(id) {
     return window.getBirthdayRewards().includes(id);
   };
 
   function renderBottles() {
-    grid.innerHTML = '';
+    grid.innerHTML='';
+    bottles.forEach((bottle,index)=>{
+      const element=document.createElement('button');
+      element.type='button';
+      element.className='bottle';
+      element.setAttribute('aria-label',`Bottle ${index+1}`);
+      if(selectedBottle===index) element.classList.add('selected');
 
-    bottles.forEach((bottle, index) => {
-      const element = document.createElement('button');
-      element.type = 'button';
-      element.className = 'bottle';
-      element.setAttribute('aria-label', `Bottle ${index + 1}`);
+      const liquid=document.createElement('div');
+      liquid.className='liquid';
 
-      if (selectedBottle === index) {
-        element.classList.add('selected');
-      }
-
-      const liquid = document.createElement('div');
-      liquid.className = 'liquid';
-
-      bottle.forEach((colorIndex, segmentIndex) => {
-        const segment = document.createElement('div');
-        segment.className = 'segment';
-        segment.style.backgroundColor = colors[colorIndex];
-
-        if (segmentIndex === bottle.length - 1) {
-          segment.classList.add('top-liquid');
-        }
-
+      bottle.forEach((colorIndex,segmentIndex)=>{
+        const segment=document.createElement('div');
+        segment.className='segment';
+        segment.style.backgroundColor=colors[colorIndex];
+        if(segmentIndex===bottle.length-1) segment.classList.add('top-liquid');
         liquid.appendChild(segment);
       });
 
       element.appendChild(liquid);
-      element.addEventListener('click', () => chooseBottle(index));
+      element.addEventListener('click',()=>chooseBottle(index));
       grid.appendChild(element);
     });
   }
-
+  
   function initLevel() {
-    locked = false;
-    selectedBottle = null;
+    locked=false;
+    selectedBottle=null;
     modal.classList.remove('show');
-
-    bottles = createPuzzle(level);
-    startingBottles = cloneBottles(bottles);
-
+    bottles=createPuzzle(level);
+    startingBottles=cloneBottles(bottles);
     updateProgress();
     saveProgress();
     renderBottles();
   }
 
-  function canPour(from, to) {
-    if (!from.length || to.length >= CAPACITY) return false;
-    if (!to.length) return true;
-    return to[to.length - 1] === from[from.length - 1];
+  function canPour(from,to) {
+    if(!from.length || to.length>=CAPACITY) return false;
+    if(!to.length) return true;
+    return to[to.length-1]===from[from.length-1];
   }
 
   function chooseBottle(index) {
-    if (locked) return;
+    if(locked) return;
 
-    if (selectedBottle === null) {
-      if (!bottles[index].length) return;
-      selectedBottle = index;
+    if(selectedBottle===null) {
+      if(!bottles[index].length) return;
+      selectedBottle=index;
       sound('select');
       renderBottles();
       return;
     }
 
-    if (selectedBottle === index) {
-      selectedBottle = null;
+    if(selectedBottle===index) {
+      selectedBottle=null;
       renderBottles();
       return;
     }
 
-    const from = bottles[selectedBottle];
-    const to = bottles[index];
+    const from=bottles[selectedBottle];
+    const to=bottles[index];
 
-    if (!canPour(from, to)) {
-      if (to.length === 0 && from.length > 0) {
-        selectedBottle = index;
+    if(!canPour(from,to)) {
+      if(to.length===0 && from.length>0) {
+        selectedBottle=index;
         sound('select');
         renderBottles();
         return;
       }
-
       sound('invalid');
-      selectedBottle = null;
+      selectedBottle=null;
       renderBottles();
       return;
     }
 
-    const movingColor = from[from.length - 1];
-
-    while (
-      from.length > 0 &&
-      from[from.length - 1] === movingColor &&
-      to.length < CAPACITY
-    ) {
+    const movingColor=from[from.length-1];
+    while(from.length && from[from.length-1]===movingColor && to.length<CAPACITY) {
       to.push(from.pop());
     }
 
-    selectedBottle = null;
+    selectedBottle=null;
     sound('pour');
     renderBottles();
-
-    if (isSolved()) finishLevel();
+    if(isSolved()) finishLevel();
   }
 
   function isSolved() {
-    return bottles.every(bottle =>
-      bottle.length === 0 ||
-      (
-        bottle.length === CAPACITY &&
-        bottle.every(color => color === bottle[0])
-      )
+    return bottles.every(bottle=>
+      bottle.length===0 ||
+      (bottle.length===CAPACITY && bottle.every(color=>color===bottle[0]))
     );
   }
 
   function finishLevel() {
-    locked = true;
+    locked=true;
     sound('win');
-
-    if (level >= TOTAL_LEVELS) {
+    if(level>=TOTAL_LEVELS) {
       unlockReward('letters');
-      localStorage.setItem(COMPLETE_KEY, 'true');
-      levelCounter.textContent = 'yayyy you unlocked the letters';
-      progressFill.style.width = '100%';
+      localStorage.setItem(COMPLETE_KEY,'true');
+      levelCounter.textContent='yayyy you unlocked the letters';
+      progressFill.style.width='100%';
     }
-
-    modalTitle.textContent = 'YAY';
-    nextButton.textContent = 'next';
+    modalTitle.textContent='YAY';
+    nextButton.textContent='next';
     modal.classList.add('show');
   }
 
@@ -671,35 +306,30 @@ body {
     initLevel();
   }
 
-  document.getElementById('restartButton').addEventListener('click', () => {
+  document.getElementById('restartButton').addEventListener('click',()=>{
     modal.classList.remove('show');
-    bottles = cloneBottles(startingBottles);
-    selectedBottle = null;
-    locked = false;
+    bottles=cloneBottles(startingBottles);
+    selectedBottle=null;
+    locked=false;
     renderBottles();
   });
 
-  nextButton.addEventListener('click', nextLevel);
+  nextButton.addEventListener('click',nextLevel);
 
-  const stars = document.getElementById('stars');
-
-  for (let i = 0; i < 48; i++) {
-    const star = document.createElement('span');
-    star.className = 'star';
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.animationDelay = `${Math.random() * 4}s`;
-    star.style.animationDuration = `${2 + Math.random() * 4}s`;
+  const stars=document.getElementById('stars');
+  for(let i=0;i<48;i++) {
+    const star=document.createElement('span');
+    star.className='star';
+    star.style.left=`${Math.random()*100}%`;
+    star.style.top=`${Math.random()*100}%`;
+    star.style.animationDelay=`${Math.random()*4}s`;
+    star.style.animationDuration=`${2+Math.random()*4}s`;
     stars.appendChild(star);
   }
 
-  if (localStorage.getItem(COMPLETE_KEY) === 'true') {
-    unlockReward('letters');
-  }
-
+  if(localStorage.getItem(COMPLETE_KEY)==='true') unlockReward('letters');
   initLevel();
 })();
 </script>
 </body>
-  </html>
-    
+</html>

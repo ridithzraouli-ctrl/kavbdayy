@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#080d18">
     <title>♡</title>
 
     <style>
@@ -15,69 +16,181 @@
             padding: 0;
         }
 
+        html {
+            width: 100%;
+            height: 100%;
+            background: #080d18;
+            overflow: hidden;
+            overscroll-behavior: none;
+        }
+
         body {
-            min-height: 100vh;
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            overscroll-behavior: none;
             background:
-                radial-gradient(circle at 20% 20%, rgba(170,210,255,0.8) 0 2px, transparent 3px),
-                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.8) 0 1px, transparent 2px),
-                linear-gradient(135deg, #080d18, #101d35 50%, #080d18);
-            background-size: 130px 130px, 170px 170px, 100% 100%;
+                radial-gradient(ellipse at 50% 45%, #142642 0%, #0d192d 45%, #080d18 100%);
             color: #dce8fa;
             font-family: 'Quicksand', sans-serif;
-            overflow-x: hidden;
         }
 
-        body::before,
-        body::after {
-            content: "✦";
-            position: fixed;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 90px;
-            color: rgba(155,195,255,0.15);
-            pointer-events: none;
-        }
+        /* Animated background */
 
-        body::before {
-            top: 20px;
-            left: 30px;
-        }
-
-        body::after {
-            content: "✧";
-            bottom: 10px;
-            right: 35px;
-            font-size: 70px;
-        }
-
-        .inventory-button {
+        .star-background {
             position: absolute;
-            top: 25px;
-            right: 25px;
-            padding: 12px 22px;
-            border: 1px solid rgba(180,210,255,0.3);
-            border-radius: 50px;
-            background: rgba(15,28,50,0.65);
-            color: #dce8fa;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 13px;
-            letter-spacing: 2px;
-            text-decoration: none;
-            backdrop-filter: blur(12px);
-            transition: background 0.25s ease, transform 0.25s ease;
+            inset: -12%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 20% 25%, rgba(64,104,165,0.13), transparent 35%),
+                radial-gradient(circle at 80% 75%, rgba(60,100,165,0.12), transparent 38%);
         }
 
-        .inventory-button:hover {
-            background: rgba(65,105,165,0.35);
-            transform: translateY(-2px);
+        .star {
+            position: absolute;
+            display: block;
+            color: #a9caff;
+            user-select: none;
+            will-change: transform, opacity;
+            animation:
+                drift var(--duration) ease-in-out infinite alternate,
+                twinkle var(--twinkle) ease-in-out infinite alternate;
+            animation-delay: var(--delay), var(--delay);
         }
+
+        .star.small {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--size);
+            opacity: 0.45;
+        }
+
+        .star.large {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: var(--size);
+            color: rgba(137,178,239,0.28);
+        }
+
+        .star.dot {
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: #b9d5ff;
+            box-shadow: 0 0 8px rgba(135,180,255,0.5);
+        }
+
+        @keyframes drift {
+            from {
+                transform: translate3d(-12px, 8px, 0) rotate(-12deg);
+            }
+            to {
+                transform: translate3d(18px, -22px, 0) rotate(18deg);
+            }
+        }
+
+        @keyframes twinkle {
+            from {
+                opacity: 0.2;
+            }
+            to {
+                opacity: 0.85;
+            }
+        }
+
+        /* Floating decorative stars */
+
+        .floating-star {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+            color: rgba(150,190,255,0.28);
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1;
+            animation: float 7s ease-in-out infinite alternate;
+        }
+
+        .floating-star.one {
+            top: 12%;
+            left: 8%;
+            font-size: 58px;
+            animation-delay: -2s;
+        }
+
+        .floating-star.two {
+            top: 23%;
+            right: 9%;
+            font-size: 36px;
+            animation-delay: -4s;
+        }
+
+        .floating-star.three {
+            bottom: 12%;
+            left: 13%;
+            font-size: 42px;
+            animation-delay: -1s;
+        }
+
+        .floating-star.four {
+            bottom: 16%;
+            right: 11%;
+            font-size: 65px;
+            animation-delay: -3s;
+        }
+
+        @keyframes float {
+            from {
+                transform: translate3d(-8px, 10px, 0) rotate(-10deg);
+            }
+            to {
+                transform: translate3d(12px, -18px, 0) rotate(15deg);
+            }
+        }
+
+        /* Page */
 
         .page {
-            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            min-height: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 70px 20px;
+            padding:
+                max(60px, env(safe-area-inset-top))
+                20px
+                max(25px, env(safe-area-inset-bottom));
+        }
+
+        .inventory-button {
+            position: absolute;
+            z-index: 5;
+            top: max(18px, env(safe-area-inset-top));
+            right: max(18px, env(safe-area-inset-right));
+            padding: 11px 20px;
+            border: 1px solid rgba(180,210,255,0.3);
+            border-radius: 50px;
+            background: rgba(15,28,50,0.78);
+            color: #dce8fa;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-decoration: none;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .inventory-button:hover {
+            background: rgba(65,105,165,0.4);
+            transform: translateY(-2px);
         }
 
         .ornament {
@@ -86,6 +199,7 @@
             font-size: 20px;
             letter-spacing: 10px;
             margin-bottom: 12px;
+            animation: softGlow 4s ease-in-out infinite alternate;
         }
 
         h1 {
@@ -110,13 +224,14 @@
         .game-container {
             width: min(460px, 100%);
             padding: 25px;
-            background: rgba(14,25,44,0.7);
+            background: rgba(14,25,44,0.76);
             border: 1px solid rgba(180,210,255,0.18);
             border-radius: 28px;
             box-shadow:
                 0 20px 60px rgba(0,0,0,0.25),
                 inset 0 0 30px rgba(130,175,255,0.04);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .games {
@@ -174,18 +289,48 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 24px;
             letter-spacing: 12px;
+            animation: softGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes softGlow {
+            from {
+                opacity: 0.55;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         @media (max-width: 600px) {
             .page {
-                padding: 80px 18px 45px;
+                padding:
+                    max(65px, env(safe-area-inset-top))
+                    18px
+                    max(25px, env(safe-area-inset-bottom));
             }
 
-            .inventory-button {
-                top: 18px;
-                right: 18px;
-                padding: 10px 17px;
-                font-size: 11px;
+            .floating-star.one {
+                top: 12%;
+                left: 3%;
+                font-size: 42px;
+            }
+
+            .floating-star.two {
+                top: 28%;
+                right: 4%;
+                font-size: 28px;
+            }
+
+            .floating-star.three {
+                bottom: 12%;
+                left: 5%;
+                font-size: 32px;
+            }
+
+            .floating-star.four {
+                bottom: 10%;
+                right: 4%;
+                font-size: 45px;
             }
 
             .game-container {
@@ -202,12 +347,77 @@
             .subtitle {
                 font-size: 17px;
                 letter-spacing: 2px;
+                margin-bottom: 28px;
+            }
+
+            .bottom-ornament {
+                margin-top: 22px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .page {
+                padding-top: 55px;
+                padding-bottom: 12px;
+            }
+
+            .ornament {
+                margin-bottom: 4px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 42px;
+            }
+
+            .subtitle {
+                margin-bottom: 15px;
+                font-size: 16px;
+            }
+
+            .game-container {
+                padding: 14px;
+            }
+
+            .games {
+                gap: 10px;
+            }
+
+            .game-button {
+                padding: 13px 17px;
+                font-size: 22px;
+            }
+
+            .bottom-ornament {
+                margin-top: 12px;
+                font-size: 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .star,
+            .floating-star,
+            .ornament,
+            .bottom-ornament {
+                animation: none;
+            }
+
+            .game-button,
+            .inventory-button {
+                transition: none;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <div class="star-background" id="starBackground" aria-hidden="true"></div>
+
+    <div class="floating-star one" aria-hidden="true">✦</div>
+    <div class="floating-star two" aria-hidden="true">✧</div>
+    <div class="floating-star three" aria-hidden="true">✧</div>
+    <div class="floating-star four" aria-hidden="true">✦</div>
 
     <a href="inventory.html" class="inventory-button">inventory</a>
 
@@ -236,6 +446,43 @@
         <div class="bottom-ornament">✧　·　✦　·　✧</div>
 
     </main>
+
+    <script>
+        const background = document.getElementById("starBackground");
+
+        const symbols = ["✦", "✧", "⋆", "·"];
+        const starCount = 42;
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement("span");
+
+            const type = Math.random();
+            star.className = "star";
+
+            if (type < 0.25) {
+                star.classList.add("large");
+                star.textContent = symbols[Math.floor(Math.random() * 3)];
+            } else if (type < 0.55) {
+                star.classList.add("small");
+                star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            } else {
+                star.classList.add("dot");
+            }
+
+            const size = type > 0.55
+                ? (Math.random() * 2 + 1) + "px"
+                : (Math.random() * 18 + 8) + "px";
+
+            star.style.left = Math.random() * 100 + "%";
+            star.style.top = Math.random() * 100 + "%";
+            star.style.setProperty("--size", size);
+            star.style.setProperty("--duration", (5 + Math.random() * 9) + "s");
+            star.style.setProperty("--twinkle", (2 + Math.random() * 4) + "s");
+            star.style.setProperty("--delay", (-Math.random() * 10) + "s");
+
+            background.appendChild(star);
+        }
+    </script>
 
 </body>
 </html>

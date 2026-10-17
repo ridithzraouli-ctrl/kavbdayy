@@ -1,633 +1,385 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080d18">
-<title>inventory ♡</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<title>♡ inventory</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@300;400;500&display=swap');
+
+*{box-sizing:border-box}
+
+:root{
+  --bg:#080d18;
+  --blue:#91caff;
+  --muted:#8798b3;
+  --line:rgba(151,190,255,.16);
 }
 
-html, body {
-  width: 100%;
-  min-height: 100%;
-  background: #080d18;
-}
-
-html {
-  overflow-x: hidden;
-  overscroll-behavior: none;
-}
-
-body {
-  min-height: 100dvh;
-  position: relative;
-  isolation: isolate;
-  overflow-x: hidden;
-  background: radial-gradient(ellipse at 50% 35%, #142642 0%, #0d192d 48%, #080d18 100%);
-  color: #dce8fa;
-  font-family: 'Quicksand', sans-serif;
-}
-
-.star-background {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
+body{
+  margin:0;
+  min-height:100vh;
+  color:#e5edff;
+  font-family:'Quicksand',sans-serif;
   background:
-    radial-gradient(circle at 20% 25%, rgba(64,104,165,.13), transparent 35%),
-    radial-gradient(circle at 80% 75%, rgba(60,100,165,.12), transparent 38%);
+    radial-gradient(ellipse at 50% 0%,#172b49 0%,transparent 55%),
+    radial-gradient(ellipse at 0% 100%,#101b31 0%,transparent 45%),
+    var(--bg);
 }
 
-.star {
-  position: absolute;
-  color: #a9caff;
-  user-select: none;
-  pointer-events: none;
-  animation: twinkle var(--duration) ease-in-out infinite alternate;
-  animation-delay: var(--delay);
+button{font:inherit}
+
+header{
+  text-align:center;
+  padding:48px 20px 28px;
 }
 
-.star.dot {
-  width: var(--size);
-  height: var(--size);
-  border-radius: 50%;
-  background: #b9d5ff;
-  box-shadow: 0 0 6px rgba(135,180,255,.4);
+.symbol{
+  color:var(--blue);
+  font-size:17px;
+  letter-spacing:12px;
+  margin-bottom:15px;
+  opacity:.8;
 }
 
-@keyframes twinkle {
-  from { opacity: .18; transform: scale(.85); }
-  to { opacity: .8; transform: scale(1.1); }
+h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:42px;
+  font-weight:400;
+  letter-spacing:3px;
+  margin:0;
 }
 
-.floating-star {
-  position: fixed;
-  z-index: 0;
-  pointer-events: none;
-  color: rgba(150,190,255,.25);
-  font-family: 'Cormorant Garamond', serif;
-  animation: float 8s ease-in-out infinite alternate;
+.subtitle{
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:3px;
+  margin-top:10px;
 }
 
-.floating-star.one {
-  top: 13%;
-  left: 5%;
-  font-size: 48px;
+main{
+  width:min(900px,92%);
+  margin:0 auto 60px;
 }
 
-.floating-star.two {
-  top: 25%;
-  right: 6%;
-  font-size: 34px;
-  animation-delay: -3s;
+section{
+  margin:24px 0;
+  padding:23px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:rgba(17,29,49,.55);
+  box-shadow:0 12px 45px #00000018;
+  backdrop-filter:blur(12px);
 }
 
-.floating-star.three {
-  bottom: 12%;
-  left: 7%;
-  font-size: 36px;
-  animation-delay: -2s;
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:20px;
 }
 
-.floating-star.four {
-  bottom: 14%;
-  right: 5%;
-  font-size: 54px;
-  animation-delay: -4s;
+h2{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:400;
+  font-size:27px;
+  margin:0;
+  letter-spacing:1px;
 }
 
-@keyframes float {
-  from { transform: translateY(7px) rotate(-8deg); }
-  to { transform: translateY(-10px) rotate(10deg); }
+.status{
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-align:right;
 }
 
-header {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 10px max(18px, env(safe-area-inset-left));
+.progress{
+  height:2px;
+  background:#ffffff10;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:22px;
 }
 
-.nav-button {
-  padding: 11px 18px;
-  border: 1px solid rgba(180,210,255,.3);
-  border-radius: 50px;
-  background: rgba(15,28,50,.78);
-  color: #dce8fa;
-  font: 500 11px 'Quicksand', sans-serif;
-  letter-spacing: 1.5px;
-  cursor: pointer;
-  transition: background .2s ease;
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#739bff,#b7ddff);
+  box-shadow:0 0 12px #91caff88;
+  transition:width .5s ease;
 }
 
-.nav-button:active {
-  background: rgba(65,105,165,.55);
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px;
 }
 
-main {
-  position: relative;
-  z-index: 1;
-  width: min(850px, 100%);
-  margin: 0 auto;
-  padding: 24px 20px 55px;
+.item{
+  position:relative;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:linear-gradient(145deg,#172943,#0b1322);
+  cursor:pointer;
+  transition:transform .25s,border-color .25s;
 }
 
-.ornament {
-  color: #799acb;
-  font: 22px 'Cormorant Garamond', serif;
-  letter-spacing: 10px;
-  text-align: center;
-  margin-bottom: 8px;
+.item:hover{
+  transform:translateY(-3px);
+  border-color:#91caff70;
 }
 
-h1 {
-  color: #e1ecff;
-  font: 500 clamp(42px, 9vw, 64px) 'Cormorant Garamond', serif;
-  letter-spacing: 3px;
-  text-align: center;
-  margin-bottom: 7px;
+.item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-.subtitle {
-  text-align: center;
-  color: #9db8df;
-  font: 16px 'Cormorant Garamond', serif;
-  letter-spacing: 1px;
-  margin-bottom: 32px;
+.item.locked{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:default;
 }
 
-.section {
-  margin: 0 auto 34px;
-  padding: clamp(17px, 4vw, 27px);
-  border: 1px solid rgba(180,210,255,.18);
-  border-radius: 25px;
-  background: rgba(14,25,44,.72);
-  box-shadow: 0 18px 48px rgba(0,0,0,.18), inset 0 0 25px rgba(130,175,255,.035);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+.item.locked:hover{transform:none}
+
+.lock{
+  color:#91a8c8;
+  font-size:23px;
+  opacity:.7;
 }
 
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 7px;
+.item.locked::after{
+  content:'✧';
+  position:absolute;
+  bottom:12px;
+  color:#91a8c8;
+  font-size:12px;
 }
 
-h2 {
-  color: #dce8fa;
-  font: 500 clamp(25px, 6vw, 34px) 'Cormorant Garamond', serif;
-  letter-spacing: 1.5px;
+.item img[hidden]{display:none}
+
+.empty{
+  display:none;
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+  padding:35px 0;
 }
 
-.status {
-  color: #92add7;
-  font-size: 10px;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  text-align: right;
+footer{
+  text-align:center;
+  padding:5px 20px 35px;
 }
 
-.description {
-  color: #8fa8cc;
-  font-size: 12px;
-  line-height: 1.8;
-  margin-bottom: 20px;
+.back{
+  background:transparent;
+  color:#c6d9f6;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:11px 25px;
+  font-size:11px;
+  letter-spacing:1.5px;
+  cursor:pointer;
 }
 
-.progress-track {
-  height: 3px;
-  width: 100%;
-  background: rgba(137,178,239,.14);
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 23px;
+.back:hover{
+  border-color:#91caff80;
+  background:#91caff0a;
 }
 
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #527dbd, #8fc1ff);
-  box-shadow: 0 0 10px rgba(119,174,255,.5);
-  transition: width .7s ease;
+#viewer{
+  position:fixed;
+  inset:0;
+  z-index:10;
+  background:#050912ed;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
 }
 
-.items {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+#viewer.open{display:flex}
+
+#viewer img{
+  max-width:100%;
+  max-height:85vh;
+  object-fit:contain;
+  border-radius:12px;
+  box-shadow:0 0 50px #91caff18;
 }
 
-.item {
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid rgba(160,195,245,.17);
-  border-radius: 15px;
-  background: rgba(19,36,62,.72);
-  transition: border-color .25s ease, background .25s ease;
+#close{
+  position:absolute;
+  top:20px;
+  right:22px;
+  background:transparent;
+  border:0;
+  color:#e5edff;
+  font-size:28px;
+  cursor:pointer;
 }
 
-.item.unlocked {
-  cursor: pointer;
-  border-color: rgba(151,192,255,.35);
-}
-
-.item.unlocked:active {
-  background: rgba(47,73,112,.75);
-}
-
-.item-image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  background: rgba(8,16,30,.65);
-}
-
-.item-locked {
-  aspect-ratio: 3 / 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background:
-    radial-gradient(ellipse at 50% 45%, rgba(65,104,162,.18), transparent 70%),
-    rgba(8,16,30,.5);
-}
-
-.lock-symbol {
-  color: #819fc9;
-  font-size: 25px;
-  text-shadow: 0 0 18px rgba(122,171,245,.3);
-}
-
-.lock-caption {
-  color: #7188a9;
-  font: 12px 'Cormorant Garamond', serif;
-  letter-spacing: 1px;
-}
-
-.item-label {
-  padding: 10px 5px 11px;
-  color: #b8cce9;
-  font: 13px 'Cormorant Garamond', serif;
-  text-align: center;
-  letter-spacing: .6px;
-}
-
-.item.unlocked .item-label {
-  color: #e0ebff;
-}
-
-.bottom-ornament {
-  color: #799acb;
-  font: 22px 'Cormorant Garamond', serif;
-  letter-spacing: 12px;
-  text-align: center;
-  margin-top: 30px;
-}
-
-.empty-message {
-  display: none;
-  padding: 18px 5px;
-  color: #a4bbdd;
-  font: 16px 'Cormorant Garamond', serif;
-  text-align: center;
-}
-
-.viewer {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 20;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(3,7,17,.88);
-}
-
-.viewer.show {
-  display: flex;
-}
-
-.viewer-inner {
-  width: min(100%, 440px);
-  max-height: 90dvh;
-  overflow: auto;
-  padding: 17px;
-  border: 1px solid rgba(180,210,255,.3);
-  border-radius: 23px;
-  background: rgba(14,25,44,.97);
-  box-shadow: 0 20px 60px rgba(0,0,0,.4);
-  text-align: center;
-}
-
-.viewer-image {
-  display: block;
-  max-width: 100%;
-  max-height: 68dvh;
-  object-fit: contain;
-  margin: 0 auto 16px;
-  border-radius: 10px;
-}
-
-.viewer-name {
-  color: #dce8fa;
-  font: 22px 'Cormorant Garamond', serif;
-  margin-bottom: 15px;
-}
-
-.close-button {
-  padding: 10px 23px;
-  border: 1px solid rgba(180,210,255,.3);
-  border-radius: 50px;
-  background: rgba(45,76,122,.65);
-  color: #e0eaff;
-  font: 11px 'Quicksand', sans-serif;
-  letter-spacing: 1.5px;
-  cursor: pointer;
-}
-
-@media (max-width: 420px) {
-  main { padding: 20px 13px 40px; }
-  .section { padding: 16px 12px; border-radius: 20px; }
-  .items { gap: 8px; }
-  .item { border-radius: 11px; }
-  .item-label { font-size: 12px; padding: 9px 3px; }
-  .description { font-size: 11px; }
-  .floating-star.one { left: 2%; font-size: 36px; }
-  .floating-star.two { right: 2%; font-size: 27px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-  }
+@media(max-width:600px){
+  header{padding-top:36px}
+  h1{font-size:36px}
+  section{padding:17px}
+  .gallery{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .section-head{align-items:flex-start}
 }
 </style>
 </head>
 
 <body>
-<div class="star-background" id="starBackground" aria-hidden="true"></div>
-<div class="floating-star one" aria-hidden="true">✦</div>
-<div class="floating-star two" aria-hidden="true">✧</div>
-<div class="floating-star three" aria-hidden="true">✧</div>
-<div class="floating-star four" aria-hidden="true">✦</div>
-
 <header>
-  <button class="nav-button" id="returnButton" type="button">return</button>
-  <span class="status" id="overallStatus">your little collection ♡</span>
+  <div class="symbol">✧ ✦ ✧</div>
+  <h1>little collection</h1>
+  <div class="subtitle">things collected for you</div>
 </header>
 
 <main>
-  <div class="ornament">✦　⋆　✦</div>
-  <h1>inventory</h1>
-  <p class="subtitle">little things you've unlocked along the way ♡</p>
-
-  <section class="section">
-    <div class="section-heading">
-      <h2>the letters</h2>
-      <span class="status" id="lettersStatus">locked · 0/10</span>
+  <section>
+    <div class="section-head">
+      <h2>letters</h2>
+      <div class="status" id="letters-status">✧ locked</div>
     </div>
-    <p class="description">complete 10 levels of Water Sort to discover these.</p>
-    <div class="progress-track">
-      <div class="progress-fill" id="lettersProgress"></div>
-    </div>
-    <div class="items" id="lettersItems"></div>
-    <div class="empty-message" id="lettersEmpty">✧ keep going, you're getting closer ✧</div>
+    <div class="progress"><div class="progress-fill" id="letters-progress"></div></div>
+    <div class="gallery" id="letters-gallery"></div>
   </section>
 
-  <section class="section">
-    <div class="section-heading">
-      <h2>the picrews</h2>
-      <span class="status" id="picrewsStatus">locked · 0/10</span>
+  <section>
+    <div class="section-head">
+      <h2>picrews</h2>
+      <div class="status" id="picrews-status">✧ locked</div>
     </div>
-    <p class="description">complete 10 levels of Color Match to reveal these.</p>
-    <div class="progress-track">
-      <div class="progress-fill" id="picrewsProgress"></div>
-    </div>
-    <div class="items" id="picrewsItems"></div>
-    <div class="empty-message" id="picrewsEmpty">✧ a few more levels and they're yours ✧</div>
+    <div class="progress"><div class="progress-fill" id="picrews-progress"></div></div>
+    <div class="gallery" id="picrews-gallery"></div>
   </section>
-
-  <div class="bottom-ornament">✧　·　✦　·　✧</div>
 </main>
 
-<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="View collection item">
-  <div class="viewer-inner">
-    <img class="viewer-image" id="viewerImage" alt="">
-    <div class="viewer-name" id="viewerName"></div>
-    <button class="close-button" id="closeViewer" type="button">close ✧</button>
-  </div>
+<footer>
+  <button class="back" onclick="location.href='index.html'">back ♡</button>
+</footer>
+
+<div id="viewer" onclick="closeViewer()">
+  <button id="close" aria-label="Close" onclick="closeViewer()">×</button>
+  <img id="viewer-image" alt="" onclick="event.stopPropagation()">
 </div>
 
 <script>
-(() => {
-  const REWARD_KEY = "birthday_unlocked_rewards";
-  const WATER_SORT_KEY = "watersort_completed_levels";
-  const COLOR_MATCH_KEY = "colormatch_completed_levels";
+const letters = [
+  "IMG_20261017_012347_350.jpg",
+  "IMG_20261017_012350_325.jpg",
+  "IMG_20261017_012353_072.jpg",
+  "IMG_20261017_012401_558.jpg",
+  "IMG_20261017_012404_053.jpg",
+  "IMG_20261017_012406_165.jpg",
+  "IMG_20261017_012408_855.jpg"
+];
 
-  const letters = [
-    "IMG_20261017_012347_350.jpg",
-    "IMG_20261017_012350_325.jpg",
-    "IMG_20261017_012353_072.jpg",
-    "IMG_20261017_012401_558.jpg",
-    "IMG_20261017_012404_053.jpg",
-    "IMG_20261017_012406_165.jpg",
-    "IMG_20261017_012408_855.jpg"
-  ];
+const picrews = [
+  "IMG_20261017_012713_131.jpg",
+  "IMG_20261017_014042_074.jpg",
+  "IMG_20261017_141856_078.jpg",
+  "IMG_20261017_144236_029.jpg",
+  "IMG_20261017_211950_511.jpg",
+  "IMG_20261017_232325_275.jpg",
+  "1868017_LJIyt4uN.png"
+];
 
-  const picrews = [
-    "IMG_20261017_012713_131.jpg",
-    "IMG_20261017_014042_074.jpg",
-    "IMG_20261017_141856_078.jpg",
-    "IMG_20261017_144236_029.jpg",
-    "IMG_20261017_211950_511.jpg",
-    "IMG_20261017_232325_275.jpg",
-    "1868017_LJIyt4uN.png"
-  ];
+function getProgress(key){
+  return Math.max(0, Number(localStorage.getItem(key)) || 0);
+}
 
-  const $ = id => document.getElementById(id);
-
-  function getRewards() {
-    try {
-      const value = JSON.parse(localStorage.getItem(REWARD_KEY) || "[]");
-      return Array.isArray(value) ? value : [];
-    } catch {
-      return [];
-    }
+function rewardUnlocked(reward, progress){
+  try{
+    const rewards = JSON.parse(
+      localStorage.getItem("birthday_unlocked_rewards") || "[]"
+    );
+    return progress >= 10 || rewards.includes(reward);
+  }catch{
+    return progress >= 10;
   }
+}
 
-  function getProgress(key) {
-    const value = Number(localStorage.getItem(key));
-    return Number.isFinite(value) ? Math.max(0, value) : 0;
-  }
+function renderGallery(id, images, unlocked){
+  const gallery = document.getElementById(id);
+  gallery.innerHTML = "";
 
-  function isRewardUnlocked(name, progress) {
-    return progress >= 10 || getRewards().includes(name);
-  }
+  images.forEach(filename => {
+    const card = document.createElement("div");
+    card.className = "item" + (unlocked ? "" : " locked");
 
-  function makeCard(filename, index, unlocked, category) {
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = "item" + (unlocked ? " unlocked" : "");
-    card.setAttribute("aria-label",
-      unlocked ? `View ${category} ${index + 1}` : `${category} ${index + 1}, locked`);
-
-    if (unlocked) {
+    if(!unlocked){
+      card.innerHTML = '<span class="lock">✧</span>';
+    }else{
       const img = document.createElement("img");
-      img.className = "item-image";
       img.src = filename;
-      img.alt = `${category} ${index + 1}`;
+      img.alt = "";
       img.loading = "lazy";
       img.onerror = () => {
-        img.style.display = "none";
-        const placeholder = card.querySelector(".item-locked");
-        if (placeholder) placeholder.style.display = "flex";
+        card.innerHTML = '<span class="lock">✧</span>';
+        card.classList.add("locked");
       };
       card.appendChild(img);
-
-      const fallback = document.createElement("div");
-      fallback.className = "item-locked";
-      fallback.style.display = "none";
-      fallback.innerHTML = '<span class="lock-symbol">✧</span><span class="lock-caption">image unavailable</span>';
-      card.appendChild(fallback);
-
-      card.addEventListener("click", () => openViewer(filename, `${category} ${index + 1}`));
-    } else {
-      const lock = document.createElement("div");
-      lock.className = "item-locked";
-      lock.innerHTML = '<span class="lock-symbol">✧</span><span class="lock-caption">not yet</span>';
-      card.appendChild(lock);
+      card.onclick = () => openViewer(filename);
     }
 
-    const label = document.createElement("div");
-    label.className = "item-label";
-    label.textContent = unlocked
-      ? `✧ ${String(index + 1).padStart(2, "0")} ✧`
-      : `♡ ${String(index + 1).padStart(2, "0")} ♡`;
-    card.appendChild(label);
-
-    return card;
-  }
-
-  function renderCollection(category, files, unlocked, progress) {
-    const isLetters = category === "letter";
-    const container = $(isLetters ? "lettersItems" : "picrewsItems");
-    const status = $(isLetters ? "lettersStatus" : "picrewsStatus");
-    const fill = $(isLetters ? "lettersProgress" : "picrewsProgress");
-    const empty = $(isLetters ? "lettersEmpty" : "picrewsEmpty");
-
-    container.innerHTML = "";
-    files.forEach((file, index) => {
-      container.appendChild(makeCard(file, index, unlocked, category));
-    });
-
-    const shownProgress = Math.min(progress, 10);
-    fill.style.width = `${shownProgress * 10}%`;
-
-    if (unlocked) {
-      status.textContent = "unlocked ♡";
-      empty.style.display = "none";
-    } else {
-      status.textContent = `locked · ${shownProgress}/10`;
-      empty.style.display = "block";
-    }
-  }
-
-  function updateInventory() {
-    const waterProgress = getProgress(WATER_SORT_KEY);
-    const colorProgress = getProgress(COLOR_MATCH_KEY);
-
-    const lettersUnlocked = isRewardUnlocked("letters", waterProgress);
-    const picrewsUnlocked = isRewardUnlocked("picrews", colorProgress);
-
-    renderCollection("letter", letters, lettersUnlocked, waterProgress);
-    renderCollection("picrew", picrews, picrewsUnlocked, colorProgress);
-
-    $("overallStatus").textContent =
-      lettersUnlocked && picrewsUnlocked
-        ? "everything unlocked ♡"
-        : "your little collection ♡";
-  }
-
-  function openViewer(filename, name) {
-    $("viewerImage").src = filename;
-    $("viewerImage").alt = name;
-    $("viewerName").textContent = name;
-    $("viewer").classList.add("show");
-  }
-
-  function closeViewer() {
-    $("viewer").classList.remove("show");
-    $("viewerImage").src = "";
-  }
-
-  $("closeViewer").addEventListener("click", closeViewer);
-  $("viewer").addEventListener("click", event => {
-    if (event.target === $("viewer")) closeViewer();
+    gallery.appendChild(card);
   });
+}
 
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeViewer();
-  });
+function render(){
+  const letterProgress = getProgress("watersort_completed_levels");
+  const picrewProgress = getProgress("colormatch_completed_levels");
 
-  $("returnButton").addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
+  const lettersOpen = rewardUnlocked("letters", letterProgress);
+  const picrewsOpen = rewardUnlocked("picrews", picrewProgress);
 
-  // Refresh if a game is completed in another tab or the user returns here.
-  window.addEventListener("storage", updateInventory);
-  window.addEventListener("focus", updateInventory);
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) updateInventory();
-  });
+  document.getElementById("letters-progress").style.width =
+    Math.min(letterProgress / 10 * 100, 100) + "%";
 
-  // Small, gentle starfield to keep the page lightweight.
-  const background = $("starBackground");
-  const symbols = ["✦", "✧", "⋆", "·"];
+  document.getElementById("picrews-progress").style.width =
+    Math.min(picrewProgress / 10 * 100, 100) + "%";
 
-  for (let i = 0; i < 18; i++) {
-    const star = document.createElement("span");
-    const dot = Math.random() < 0.35;
-    star.className = "star" + (dot ? " dot" : "");
+  document.getElementById("letters-status").textContent =
+    lettersOpen ? "♡ unlocked" : "✧ " + Math.min(letterProgress,10) + " / 10";
 
-    if (!dot) {
-      star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-      star.style.fontSize = `${10 + Math.random() * 15}px`;
-    }
+  document.getElementById("picrews-status").textContent =
+    picrewsOpen ? "♡ unlocked" : "✧ " + Math.min(picrewProgress,10) + " / 10";
 
-    const size = `${1 + Math.random() * 2}px`;
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    star.style.setProperty("--size", size);
-    star.style.setProperty("--duration", `${2.5 + Math.random() * 4}s`);
-    star.style.setProperty("--delay", `${-Math.random() * 5}s`);
+  renderGallery("letters-gallery", letters, lettersOpen);
+  renderGallery("picrews-gallery", picrews, picrewsOpen);
+}
 
-    background.appendChild(star);
-  }
+function openViewer(filename){
+  document.getElementById("viewer-image").src = filename;
+  document.getElementById("viewer").classList.add("open");
+}
 
-  updateInventory();
-})();
+function closeViewer(){
+  document.getElementById("viewer").classList.remove("open");
+}
+
+document.addEventListener("keydown", event => {
+  if(event.key === "Escape") closeViewer();
+});
+
+window.addEventListener("storage", render);
+window.addEventListener("focus", render);
+document.addEventListener("visibilitychange", () => {
+  if(!document.hidden) render();
+});
+
+render();
 </script>
 </body>
-  </html>
-  
+</html>

@@ -605,15 +605,19 @@ body::after {
     }
   }
 
-  function updateProgress() {
-    const percent = Math.min(completed / TOTAL_LEVELS, 1) * 100;
-    progressFill.style.width = `${percent}%`;
-    unlockMessage.classList.toggle("visible", isUnlocked());
-    message.classList.toggle(
-      "visible",
-      !isUnlocked() && message.dataset.show === "true"
-    );
+  
+function updateProgress() {
+  const progress = Math.min(completed, 10);
+  progressFill.style.width = `${progress * 10}%`;
+
+  if (progress >= 10) {
+    unlockMessage.textContent = "yayyy you unlocked the picrews";
+    unlockMessage.classList.add("visible");
+  } else {
+    unlockMessage.classList.remove("visible");
   }
+}
+
 
   function showSpaceMessage() {
     if (isUnlocked()) {

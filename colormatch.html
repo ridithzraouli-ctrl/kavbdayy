@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +9,13 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap');
 
+:root {
+  --bg: #080d18;
+  --blue: #8fc1ff;
+  --pale: #dce8fa;
+  --muted: #91acd4;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,23 +26,116 @@
 html, body {
   width: 100%;
   min-height: 100%;
-  background: #080d18;
+  background: var(--bg);
 }
 
 body {
   min-height: 100dvh;
   overflow: hidden;
-  background: radial-gradient(ellipse at 50% 45%, #142642 0%, #0d192d 45%, #080d18 100%);
-  color: #dce8fa;
-  font-family: 'Quicksand', sans-serif;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
+  padding: max(70px, env(safe-area-inset-top)) 18px
+           max(24px, env(safe-area-inset-bottom));
+  color: var(--pale);
+  font-family: 'Quicksand', sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 43%, rgba(31,60,101,.48) 0%, transparent 48%),
+    radial-gradient(ellipse at 8% 12%, rgba(57,91,143,.13), transparent 34%),
+    radial-gradient(ellipse at 92% 86%, rgba(49,78,128,.13), transparent 36%),
+    linear-gradient(145deg, #0c1525 0%, #080d18 55%, #070b14 100%);
 }
 
-#returnButton, #restartButton {
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 0;
+}
+
+body::before {
+  width: 260px;
+  height: 260px;
+  top: -130px;
+  right: -95px;
+  border: 1px solid rgba(143,193,255,.06);
+  box-shadow:
+    0 0 0 26px rgba(143,193,255,.018),
+    0 0 0 58px rgba(143,193,255,.012);
+}
+
+body::after {
+  width: 210px;
+  height: 210px;
+  bottom: -125px;
+  left: -90px;
+  border: 1px solid rgba(143,193,255,.06);
+  box-shadow:
+    0 0 0 24px rgba(143,193,255,.016),
+    0 0 0 52px rgba(143,193,255,.01);
+}
+
+#starfield {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #c4ddff;
+  opacity: var(--opacity);
+  box-shadow: 0 0 7px rgba(143,193,255,.65);
+  animation: twinkle var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+.star.cross {
+  width: 7px;
+  height: 7px;
+  background: transparent;
+  box-shadow: none;
+  opacity: .2;
+}
+
+.star.cross::before,
+.star.cross::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #b8d5ff;
+  border-radius: 4px;
+}
+
+.star.cross::before {
+  width: 1px;
+  height: 7px;
+}
+
+.star.cross::after {
+  width: 7px;
+  height: 1px;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: calc(var(--opacity) * .45); transform: scale(.8); }
+  50% { opacity: var(--opacity); transform: scale(1.25); }
+}
+
+#returnButton,
+#restartButton {
   position: fixed;
   top: max(18px, env(safe-area-inset-top));
   padding: 9px 15px;
@@ -48,21 +147,23 @@ body {
   letter-spacing: 1.5px;
   cursor: pointer;
   z-index: 5;
+  backdrop-filter: blur(8px);
+  transition: background .25s, border-color .25s, box-shadow .25s;
 }
 
-#returnButton {
-  left: 16px;
-}
+#returnButton { left: 16px; }
+#restartButton { right: 16px; }
 
-#restartButton {
-  right: 16px;
-}
-
-#returnButton:active, #restartButton:active {
+#returnButton:active,
+#restartButton:active {
   background: rgba(65,105,165,.4);
+  border-color: rgba(180,210,255,.42);
+  box-shadow: 0 0 14px rgba(119,174,255,.1);
 }
 
 .game {
+  position: relative;
+  z-index: 1;
   width: min(100%, 440px);
   display: flex;
   flex-direction: column;
@@ -117,25 +218,63 @@ body {
   transition: width .55s ease;
 }
 
-.board-wrap {
+.board-shell {
+  position: relative;
   width: min(88vw, 390px);
   aspect-ratio: 1;
+  padding: 9px;
+}
+
+.board-wrap {
   position: relative;
+  width: 100%;
+  height: 100%;
   padding: 10px;
-  border: 1px solid rgba(180,210,255,.13);
-  border-radius: 17px;
-  background: rgba(14,25,44,.35);
-  box-shadow: 0 15px 45px rgba(0,0,0,.16), inset 0 0 22px rgba(130,175,255,.025);
+  border: 1px solid rgba(180,210,255,.16);
+  border-radius: 19px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(90,132,192,.09), transparent 70%),
+    rgba(14,25,44,.52);
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.2),
+    0 0 28px rgba(64,113,183,.055),
+    inset 0 0 22px rgba(130,175,255,.035);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
 }
 
+.board-wrap::before,
+.board-wrap::after {
+  content: "";
+  position: absolute;
+  width: 21px;
+  height: 21px;
+  pointer-events: none;
+  border-color: rgba(158,195,250,.38);
+  border-style: solid;
+  z-index: 3;
+}
+
+.board-wrap::before {
+  top: 5px;
+  left: 5px;
+  border-width: 1px 0 0 1px;
+  border-top-left-radius: 8px;
+}
+
+.board-wrap::after {
+  right: 5px;
+  bottom: 5px;
+  border-width: 0 1px 1px 0;
+  border-bottom-right-radius: 8px;
+}
+
 #board {
+  position: relative;
   width: 100%;
   height: 100%;
   display: grid;
-  position: relative;
   gap: 0;
   touch-action: none;
 }
@@ -155,7 +294,13 @@ body {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: rgba(153,190,243,.12);
+  background: rgba(153,190,243,.17);
+  box-shadow: 0 0 4px rgba(143,193,255,.035);
+  transition: background .15s, box-shadow .15s;
+}
+
+.cell.path-filled::after {
+  background: rgba(220,236,255,.22);
 }
 
 .endpoint {
@@ -170,7 +315,9 @@ body {
   border-radius: 50%;
   border: 2px solid var(--color);
   background: var(--color);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--color) 35%, transparent);
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--color) 35%, transparent),
+    0 0 18px color-mix(in srgb, var(--color) 15%, transparent);
 }
 
 .endpoint::after {
@@ -179,6 +326,12 @@ body {
   inset: 3px;
   border-radius: 50%;
   background: rgba(8,13,24,.24);
+}
+
+.endpoint.connected {
+  box-shadow:
+    0 0 9px color-mix(in srgb, var(--color) 48%, transparent),
+    0 0 20px color-mix(in srgb, var(--color) 22%, transparent);
 }
 
 #lines {
@@ -195,15 +348,30 @@ body {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: .64;
-  opacity: .88;
-  filter: drop-shadow(0 0 1.3px currentColor);
+  stroke-width: .68;
+  opacity: .91;
+  filter: drop-shadow(0 0 1.7px currentColor);
 }
 
 .path-line.preview {
-  opacity: .8;
+  opacity: .78;
   stroke-dasharray: .12 .1;
 }
+
+.board-shell .ornament {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #a9ceff;
+  opacity: .35;
+  box-shadow: 0 0 8px rgba(143,193,255,.6);
+}
+
+.ornament.a { top: 0; left: 50%; }
+.ornament.b { bottom: 0; right: 50%; }
+.ornament.c { top: 50%; left: 0; }
+.ornament.d { top: 50%; right: 0; }
 
 #win {
   position: fixed;
@@ -223,12 +391,20 @@ body {
 
 .win-inner {
   width: min(100%, 300px);
-  padding: 28px 20px;
+  padding: 30px 20px;
   text-align: center;
   border: 1px solid rgba(180,210,255,.23);
   border-radius: 22px;
-  background: rgba(14,25,44,.97);
-  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(76,113,171,.17), transparent 70%),
+    rgba(14,25,44,.97);
+  box-shadow: 0 20px 60px rgba(0,0,0,.3), 0 0 30px rgba(84,136,204,.07);
+  animation: modalIn .35s ease both;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 #winTitle {
@@ -246,22 +422,42 @@ body {
   color: #e0eaff;
   font: 12px 'Quicksand', sans-serif;
   letter-spacing: 2px;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s;
+}
+
+#nextButton:active {
+  background: rgba(68,105,160,.65);
+  box-shadow: 0 0 15px rgba(143,193,255,.12);
 }
 
 @media (max-width: 420px) {
   .game { gap: 17px; }
-  .board-wrap { width: min(88vw, 360px); padding: 8px; }
-  #lines { inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); }
+  .board-shell { width: min(88vw, 360px); padding: 7px; }
+  .board-wrap { padding: 8px; }
+  #lines {
+    inset: 8px;
+    width: calc(100% - 16px);
+    height: calc(100% - 16px);
+  }
+}
+
+@media (max-height: 650px) {
+  body { padding-top: 60px; padding-bottom: 12px; }
+  .game { gap: 12px; }
+  .board-shell { width: min(78vw, 330px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .message.visible { animation: none; }
   .progress-fill { transition: none; }
+  .star { animation: none; }
 }
 </style>
 </head>
 
 <body>
+<div id="starfield" aria-hidden="true"></div>
 
 <button id="returnButton" type="button">return</button>
 <button id="restartButton" type="button">restart</button>
@@ -273,9 +469,16 @@ body {
     <div class="progress-fill" id="progressFill"></div>
   </div>
 
-  <div class="board-wrap" id="boardWrap">
-    <div id="board"></div>
-    <svg id="lines" viewBox="0 0 5 5" preserveAspectRatio="none"></svg>
+  <div class="board-shell">
+    <span class="ornament a"></span>
+    <span class="ornament b"></span>
+    <span class="ornament c"></span>
+    <span class="ornament d"></span>
+
+    <div class="board-wrap" id="boardWrap">
+      <div id="board"></div>
+      <svg id="lines" viewBox="0 0 5 5" preserveAspectRatio="none"></svg>
+    </div>
   </div>
 </main>
 
@@ -286,9 +489,7 @@ body {
   </div>
 </div>
 
-<script>
-  
-(() => {
+<script>(() => {
   const TOTAL_LEVELS = 10;
   const REWARD_KEY = "birthday_unlocked_rewards";
   const PROGRESS_KEY = "colormatch_completed_levels";
@@ -300,9 +501,20 @@ body {
     "#b18aff",
     "#ffd166",
     "#62dfbd",
-    "#ff9c66",
-    "#f28ce5",
-    "#8ca8ff"
+    "#ff9c66"
+  ];
+
+  const levelDesigns = [
+    { size: 5, colors: 3, route: "rows",      cuts: [1, 3, 2] },
+    { size: 5, colors: 3, route: "columns",   cuts: [3, 1, 2] },
+    { size: 5, colors: 4, route: "spiral",    cuts: [2, 4, 1, 3] },
+    { size: 5, colors: 4, route: "rowsFlip",  cuts: [4, 1, 3, 2] },
+    { size: 6, colors: 4, route: "columns",   cuts: [1, 4, 2, 3] },
+    { size: 6, colors: 4, route: "spiral",    cuts: [3, 1, 4, 2] },
+    { size: 6, colors: 5, route: "rowsFlip",  cuts: [2, 4, 1, 3, 2] },
+    { size: 6, colors: 5, route: "columnsFlip", cuts: [4, 1, 3, 2, 5] },
+    { size: 6, colors: 6, route: "spiralFlip", cuts: [1, 4, 2, 5, 3, 2] },
+    { size: 6, colors: 6, route: "rows",     cuts: [4, 2, 5, 1, 3, 2] }
   ];
 
   const board = document.getElementById("board");
@@ -316,7 +528,7 @@ body {
 
   let completed = Math.max(
     0,
-    Number(localStorage.getItem(PROGRESS_KEY)) || 0
+    Math.min(TOTAL_LEVELS, Number(localStorage.getItem(PROGRESS_KEY)) || 0)
   );
 
   let level = Math.min(completed + 1, TOTAL_LEVELS);
@@ -328,15 +540,38 @@ body {
   let locked = false;
   let messageTimer = null;
 
+  function makeStars() {
+    const field = document.getElementById("starfield");
+    field.innerHTML = "";
+
+    for (let i = 0; i < 42; i++) {
+      const star = document.createElement("span");
+      const cross = i % 9 === 0;
+
+      star.className = cross ? "star cross" : "star";
+      star.style.left = `${(i * 37 + 11) % 100}%`;
+      star.style.top = `${(i * 61 + 7) % 100}%`;
+      star.style.setProperty("--opacity", cross ? ".3" : ".23");
+      star.style.setProperty("--duration", `${3 + (i % 5) * .7}s`);
+      star.style.setProperty("--delay", `${-(i % 7) * .6}s`);
+
+      field.appendChild(star);
+    }
+  }
+
   function saveReward() {
     try {
       const rewards = JSON.parse(
         localStorage.getItem(REWARD_KEY) || "[]"
       );
 
-      if (Array.isArray(rewards) && !rewards.includes("picrews")) {
-        rewards.push("picrews");
+      if (Array.isArray(rewards)) {
+        if (!rewards.includes("picrews")) {
+          rewards.push("picrews");
+        }
         localStorage.setItem(REWARD_KEY, JSON.stringify(rewards));
+      } else {
+        localStorage.setItem(REWARD_KEY, JSON.stringify(["picrews"]));
       }
     } catch {
       localStorage.setItem(REWARD_KEY, JSON.stringify(["picrews"]));
@@ -351,7 +586,7 @@ body {
     clearTimeout(messageTimer);
     messageTimer = setTimeout(() => {
       message.classList.remove("visible");
-    }, 3000);
+    }, 3200);
   }
 
   function updateProgress() {
@@ -359,55 +594,145 @@ body {
       `${Math.min(completed / TOTAL_LEVELS, 1) * 100}%`;
   }
 
-  function makeSolution() {
-    size = level <= 4 ? 5 : 6;
-
-    const snake = [];
+  function rowSnake() {
+    const result = [];
 
     for (let row = 0; row < size; row++) {
       if (row % 2 === 0) {
         for (let col = 0; col < size; col++) {
-          snake.push(row * size + col);
+          result.push(row * size + col);
         }
       } else {
         for (let col = size - 1; col >= 0; col--) {
-          snake.push(row * size + col);
+          result.push(row * size + col);
         }
       }
     }
 
-    const colorCount = Math.min(
-      3 + Math.floor((level - 1) / 2),
-      6,
-      Math.floor((size * size) / 4)
-    );
+    return result;
+  }
 
-    const cuts = [];
-    const remaining = snake.length;
-    let cursor = 0;
+  function columnSnake() {
+    const result = [];
 
-    for (let i = 0; i < colorCount; i++) {
-      const leftColors = colorCount - i;
-      const leftCells = remaining - cursor;
-      let chunkLength;
-
-      if (i === colorCount - 1) {
-        chunkLength = leftCells;
+    for (let col = 0; col < size; col++) {
+      if (col % 2 === 0) {
+        for (let row = 0; row < size; row++) {
+          result.push(row * size + col);
+        }
       } else {
-        const minLength = 2;
-        const maxLength = leftCells - (leftColors - 1) * minLength;
-        chunkLength = Math.max(
-          minLength,
-          Math.floor(leftCells / leftColors)
-        );
-        chunkLength = Math.min(chunkLength, maxLength);
+        for (let row = size - 1; row >= 0; row--) {
+          result.push(row * size + col);
+        }
       }
-
-      cuts.push(snake.slice(cursor, cursor + chunkLength));
-      cursor += chunkLength;
     }
 
-    paths = cuts.map((cells, index) => ({
+    return result;
+  }
+
+  function spiralRoute() {
+    const result = [];
+    let top = 0;
+    let bottom = size - 1;
+    let left = 0;
+    let right = size - 1;
+
+    while (top <= bottom && left <= right) {
+      for (let col = left; col <= right; col++) {
+        result.push(top * size + col);
+      }
+      top++;
+
+      for (let row = top; row <= bottom; row++) {
+        result.push(row * size + right);
+      }
+      right--;
+
+      if (top <= bottom) {
+        for (let col = right; col >= left; col--) {
+          result.push(bottom * size + col);
+        }
+        bottom--;
+      }
+
+      if (left <= right) {
+        for (let row = bottom; row >= top; row--) {
+          result.push(row * size + left);
+        }
+        left++;
+      }
+    }
+
+    return result;
+  }
+
+  function makeRoute(type) {
+    let route;
+
+    if (type === "columns" || type === "columnsFlip") {
+      route = columnSnake();
+    } else if (type === "spiral" || type === "spiralFlip") {
+      route = spiralRoute();
+    } else {
+      route = rowSnake();
+    }
+
+    if (
+      type === "rowsFlip" ||
+      type === "columnsFlip" ||
+      type === "spiralFlip"
+    ) {
+      route.reverse();
+    }
+
+    return route;
+  }
+
+  function splitRoute(route, count, weights) {
+    const total = route.length;
+    const lengths = Array(count).fill(2);
+    let remaining = total - count * 2;
+
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    const fractions = weights.map(weight => {
+      const exact = remaining * weight / totalWeight;
+      return { whole: Math.floor(exact), fraction: exact - Math.floor(exact) };
+    });
+
+    fractions.forEach((part, i) => {
+      lengths[i] += part.whole;
+    });
+
+    let assigned = lengths.reduce((sum, length) => sum + length, 0);
+    let leftover = total - assigned;
+
+    const order = fractions
+      .map((part, i) => ({ i, fraction: part.fraction }))
+      .sort((a, b) => b.fraction - a.fraction);
+
+    for (let i = 0; i < leftover; i++) {
+      lengths[order[i % order.length].i]++;
+    }
+
+    const result = [];
+    let cursor = 0;
+
+    for (const length of lengths) {
+      result.push(route.slice(cursor, cursor + length));
+      cursor += length;
+    }
+
+    return result;
+  }
+
+  function makeSolution() {
+    const design = levelDesigns[level - 1];
+    size = design.size;
+
+    const route = makeRoute(design.route);
+    const chunks = splitRoute(route, design.colors, design.cuts);
+
+    paths = chunks.map((cells, index) => ({
       index,
       color: palette[index],
       start: cells[0],
@@ -436,7 +761,6 @@ body {
     board.innerHTML = "";
     board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
     board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
-
     svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
 
     for (let index = 0; index < size * size; index++) {
@@ -445,10 +769,11 @@ body {
       cell.dataset.index = index;
 
       if (endpoints.has(index)) {
-        const endpoint = endpoints.get(index);
+        const endpointInfo = endpoints.get(index);
         const dot = document.createElement("div");
+
         dot.className = "endpoint";
-        dot.style.setProperty("--color", endpoint.color);
+        dot.style.setProperty("--color", endpointInfo.color);
         cell.appendChild(dot);
       }
 
@@ -458,36 +783,64 @@ body {
     renderLines();
   }
 
+  function drawPath(path, isPreview = false) {
+    if (path.length < 2) return;
+
+    const points = path.map(index => {
+      const row = Math.floor(index / size);
+      const col = index % size;
+      return `${col + .5},${row + .5}`;
+    });
+
+    const line = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "polyline"
+    );
+
+    line.setAttribute("points", points.join(" "));
+    line.setAttribute(
+      "stroke",
+      isPreview ? drawing.color : paths.find(p => p.cells === path)?.color || "#8fc1ff"
+    );
+    line.setAttribute("class", isPreview ? "path-line preview" : "path-line");
+
+    const color = isPreview
+      ? drawing.color
+      : paths.find(p => p.cells === path)?.color || "#8fc1ff";
+
+    line.style.color = color;
+    svg.appendChild(line);
+  }
+
   function renderLines() {
     svg.innerHTML = "";
 
     paths.forEach(path => {
-      if (path.cells.length < 2) return;
+      if (path.cells.length > 1) {
+        const points = path.cells.map(index => {
+          const row = Math.floor(index / size);
+          const col = index % size;
+          return `${col + .5},${row + .5}`;
+        });
 
-      const points = path.cells.map(index => {
-        const row = Math.floor(index / size);
-        const col = index % size;
-        return `${col + 0.5},${row + 0.5}`;
-      });
+        const line = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "polyline"
+        );
 
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "polyline"
-      );
-
-      line.setAttribute("points", points.join(" "));
-      line.setAttribute("stroke", path.color);
-      line.setAttribute("class", "path-line");
-      line.style.color = path.color;
-
-      svg.appendChild(line);
+        line.setAttribute("points", points.join(" "));
+        line.setAttribute("stroke", path.color);
+        line.setAttribute("class", "path-line");
+        line.style.color = path.color;
+        svg.appendChild(line);
+      }
     });
 
     if (drawing && drawing.cells.length > 1) {
       const points = drawing.cells.map(index => {
         const row = Math.floor(index / size);
         const col = index % size;
-        return `${col + 0.5},${row + 0.5}`;
+        return `${col + .5},${row + .5}`;
       });
 
       const line = document.createElementNS(
@@ -501,20 +854,58 @@ body {
       line.style.color = drawing.color;
       svg.appendChild(line);
     }
+
+    board.querySelectorAll(".endpoint").forEach(dot => {
+      dot.classList.remove("connected");
+    });
+
+    paths.forEach(path => {
+      if (!path.complete) return;
+
+      [path.start, path.end].forEach(index => {
+        const cell = board.querySelector(`[data-index="${index}"]`);
+        const dot = cell && cell.querySelector(".endpoint");
+        if (dot) dot.classList.add("connected");
+      });
+    });
+
+    board.querySelectorAll(".cell").forEach(cell => {
+      cell.classList.remove("path-filled");
+    });
+
+    const filled = new Set();
+
+    paths.forEach(path => {
+      if (path.complete) path.cells.forEach(index => filled.add(index));
+    });
+
+    if (drawing) drawing.cells.forEach(index => filled.add(index));
+
+    filled.forEach(index => {
+      const cell = board.querySelector(`[data-index="${index}"]`);
+      if (cell) cell.classList.add("path-filled");
+    });
   }
 
   function rebuildOccupied() {
     occupied = new Map();
 
     paths.forEach(path => {
+      if (!path.complete) return;
       path.cells.forEach(cell => occupied.set(cell, path.index));
     });
   }
 
   function cellFromPointer(event) {
     const rect = board.getBoundingClientRect();
-    const col = Math.floor((event.clientX - rect.left) / rect.width * size);
-    const row = Math.floor((event.clientY - rect.top) / rect.height * size);
+
+    const col = Math.floor(
+      ((event.clientX - rect.left) / rect.width) * size
+    );
+
+    const row = Math.floor(
+      ((event.clientY - rect.top) / rect.height) * size
+    );
 
     if (row < 0 || col < 0 || row >= size || col >= size) {
       return null;
@@ -544,13 +935,6 @@ body {
       rebuildOccupied();
     }
 
-    paths.forEach(other => {
-      if (other.index === path.index) {
-        other.complete = false;
-        other.cells = [];
-      }
-    });
-
     drawing = {
       pathIndex: path.index,
       color: path.color,
@@ -558,7 +942,6 @@ body {
       cells: [cell]
     };
 
-    rebuildOccupied();
     renderLines();
     return true;
   }
@@ -567,12 +950,12 @@ body {
     if (!drawing || target === null) return;
 
     const current = drawing.cells[drawing.cells.length - 1];
-
     if (target === current) return;
 
-    if (drawing.cells.includes(target)) {
-      const position = drawing.cells.indexOf(target);
-      drawing.cells = drawing.cells.slice(0, position + 1);
+    const previousPosition = drawing.cells.indexOf(target);
+
+    if (previousPosition !== -1) {
+      drawing.cells = drawing.cells.slice(0, previousPosition + 1);
       renderLines();
       return;
     }
@@ -585,9 +968,9 @@ body {
       return;
     }
 
-    const otherOwner = occupied.get(target);
+    const owner = occupied.get(target);
 
-    if (otherOwner !== undefined && otherOwner !== drawing.pathIndex) {
+    if (owner !== undefined && owner !== drawing.pathIndex) {
       return;
     }
 
@@ -595,9 +978,11 @@ body {
 
     if (endpoint && endpoint.pathIndex === drawing.pathIndex) {
       const path = paths[drawing.pathIndex];
-      const correctEnd = target === path.start || target === path.end;
 
-      if (correctEnd && target !== drawing.start) {
+      if (
+        (target === path.start || target === path.end) &&
+        target !== drawing.start
+      ) {
         path.cells = [...drawing.cells];
         path.complete = true;
         drawing = null;
@@ -617,18 +1002,18 @@ body {
     const path = paths[drawing.pathIndex];
     const last = drawing.cells[drawing.cells.length - 1];
 
-    if (last === path.start || last === path.end) {
+    if (
+      (last === path.start || last === path.end) &&
+      last !== drawing.start
+    ) {
       path.cells = [...drawing.cells];
       path.complete = true;
       rebuildOccupied();
-      drawing = null;
-      renderLines();
-      checkComplete();
-      return;
     }
 
     drawing = null;
     renderLines();
+    checkComplete();
   }
 
   function allCellsCovered() {
@@ -655,6 +1040,7 @@ body {
 
   function winLevel() {
     locked = true;
+
     completed = Math.max(completed, level);
     localStorage.setItem(PROGRESS_KEY, String(completed));
     updateProgress();
@@ -676,6 +1062,7 @@ body {
     drawing = null;
     win.classList.remove("show");
     message.classList.remove("visible");
+    clearTimeout(messageTimer);
 
     makeSolution();
     rebuildOccupied();
@@ -689,14 +1076,14 @@ body {
     const cell = cellFromPointer(event);
     if (cell === null) return;
 
-    const endpoint = endpoints.get(cell);
-
-    if (endpoint) {
+    if (endpoints.has(cell)) {
       event.preventDefault();
-      boardWrap.setPointerCapture(event.pointerId);
+
+      try {
+        boardWrap.setPointerCapture(event.pointerId);
+      } catch {}
+
       beginDrawing(cell);
-    } else if (drawing) {
-      extendDrawing(cell);
     }
   });
 
@@ -716,10 +1103,16 @@ body {
 
       let next;
 
-      if (col !== targetCol) {
+      // Prefer the axis with the larger remaining distance.
+      const horizontalDistance = Math.abs(targetCol - col);
+      const verticalDistance = Math.abs(targetRow - row);
+
+      if (horizontalDistance >= verticalDistance && col !== targetCol) {
         next = current + (targetCol > col ? 1 : -1);
       } else if (row !== targetRow) {
         next = current + (targetRow > row ? size : -size);
+      } else if (col !== targetCol) {
+        next = current + (targetCol > col ? 1 : -1);
       } else {
         break;
       }
@@ -730,9 +1123,14 @@ body {
       extendDrawing(next);
 
       if (!drawing) return;
-      if (drawing.cells.length === oldLength) break;
 
-      current = drawing.cells[drawing.cells.length - 1];
+      const newCurrent = drawing.cells[drawing.cells.length - 1];
+
+      if (drawing.cells.length === oldLength && newCurrent === current) {
+        break;
+      }
+
+      current = newCurrent;
     }
   });
 
@@ -759,6 +1157,7 @@ body {
     startLevel();
   });
 
+  makeStars();
   startLevel();
 })();
 </script>

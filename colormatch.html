@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#080d18">
 <title>♡</title>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap');
 
@@ -23,10 +22,17 @@ html, body {
   background: #080d18;
 }
 
+html {
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
 body {
   min-height: 100dvh;
-  overflow: hidden;
   position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,118 +40,133 @@ body {
   padding: max(70px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
   color: #dce8fa;
   font-family: 'Quicksand', sans-serif;
-  background:
-    radial-gradient(ellipse at 50% 43%, rgba(31,60,101,.48), transparent 48%),
-    radial-gradient(ellipse at 8% 12%, rgba(57,91,143,.13), transparent 34%),
-    radial-gradient(ellipse at 92% 86%, rgba(49,78,128,.13), transparent 36%),
-    linear-gradient(145deg, #0c1525, #080d18 55%, #070b14);
+  background: radial-gradient(ellipse at 50% 45%, #142642 0%, #0d192d 45%, #080d18 100%);
 }
 
-body::before,
-body::after {
-  content: "";
+.star-background {
   position: fixed;
-  pointer-events: none;
-  border-radius: 50%;
+  inset: -12%;
   z-index: 0;
-}
-
-body::before {
-  width: 260px;
-  height: 260px;
-  top: -130px;
-  right: -95px;
-  border: 1px solid rgba(143,193,255,.06);
-  box-shadow: 0 0 0 26px rgba(143,193,255,.018), 0 0 0 58px rgba(143,193,255,.012);
-}
-
-body::after {
-  width: 210px;
-  height: 210px;
-  bottom: -125px;
-  left: -90px;
-  border: 1px solid rgba(143,193,255,.06);
-  box-shadow: 0 0 0 24px rgba(143,193,255,.016), 0 0 0 52px rgba(143,193,255,.01);
-}
-
-#starfield {
-  position: fixed;
-  inset: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  background:
+    radial-gradient(circle at 20% 25%, rgba(64,104,165,.13), transparent 35%),
+    radial-gradient(circle at 80% 75%, rgba(60,100,165,.12), transparent 38%);
 }
 
 .star {
   position: absolute;
-  width: 2px;
-  height: 2px;
+  display: block;
+  color: #a9caff;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: drift var(--duration) ease-in-out infinite alternate,
+             twinkle var(--twinkle) ease-in-out infinite alternate;
+  animation-delay: var(--delay), var(--delay);
+}
+
+.star.small, .star.large {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.star.small {
+  font-size: var(--size);
+  opacity: .45;
+}
+
+.star.large {
+  font-size: var(--size);
+  color: rgba(137,178,239,.28);
+}
+
+.star.dot {
+  width: var(--size);
+  height: var(--size);
   border-radius: 50%;
-  background: #c4ddff;
-  opacity: var(--opacity);
-  box-shadow: 0 0 7px rgba(143,193,255,.65);
-  animation: twinkle var(--duration) ease-in-out infinite;
-  animation-delay: var(--delay);
+  background: #b9d5ff;
+  box-shadow: 0 0 8px rgba(135,180,255,.5);
 }
 
-.star.cross {
-  width: 7px;
-  height: 7px;
-  background: transparent;
-  box-shadow: none;
-  opacity: .2;
-}
-
-.star.cross::before,
-.star.cross::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #b8d5ff;
-  border-radius: 4px;
-}
-
-.star.cross::before {
-  width: 1px;
-  height: 7px;
-}
-
-.star.cross::after {
-  width: 7px;
-  height: 1px;
+@keyframes drift {
+  from { transform: translate3d(-12px, 8px, 0) rotate(-12deg); }
+  to { transform: translate3d(18px, -22px, 0) rotate(18deg); }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: calc(var(--opacity) * .45); transform: scale(.8); }
-  50% { opacity: var(--opacity); transform: scale(1.25); }
+  from { opacity: .2; }
+  to { opacity: .85; }
+}
+
+.floating-star {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  color: rgba(150,190,255,.28);
+  font-family: 'Cormorant Garamond', serif;
+  line-height: 1;
+  animation: float 7s ease-in-out infinite alternate;
+}
+
+.floating-star.one {
+  top: 12%;
+  left: 8%;
+  font-size: 58px;
+  animation-delay: -2s;
+}
+
+.floating-star.two {
+  top: 23%;
+  right: 9%;
+  font-size: 36px;
+  animation-delay: -4s;
+}
+
+.floating-star.three {
+  bottom: 12%;
+  left: 13%;
+  font-size: 42px;
+  animation-delay: -1s;
+}
+
+.floating-star.four {
+  bottom: 16%;
+  right: 11%;
+  font-size: 65px;
+  animation-delay: -3s;
+}
+
+@keyframes float {
+  from { transform: translate3d(-8px, 10px, 0) rotate(-10deg); }
+  to { transform: translate3d(12px, -18px, 0) rotate(15deg); }
 }
 
 #returnButton,
 #restartButton {
   position: fixed;
   top: max(18px, env(safe-area-inset-top));
-  padding: 9px 15px;
-  border: 1px solid rgba(180,210,255,.2);
+  padding: 11px 20px;
+  border: 1px solid rgba(180,210,255,.3);
   border-radius: 50px;
-  background: rgba(15,28,50,.65);
+  background: rgba(15,28,50,.78);
   color: #dce8fa;
-  font: 11px 'Quicksand', sans-serif;
-  letter-spacing: 1.5px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
   cursor: pointer;
   z-index: 5;
-  backdrop-filter: blur(8px);
-  transition: background .25s, border-color .25s;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background .25s ease, transform .25s ease;
 }
 
-#returnButton { left: 16px; }
-#restartButton { right: 16px; }
+#returnButton { left: max(16px, env(safe-area-inset-left)); }
+#restartButton { right: max(16px, env(safe-area-inset-right)); }
 
-#returnButton:active,
-#restartButton:active {
+#returnButton:hover,
+#restartButton:hover {
   background: rgba(65,105,165,.4);
-  border-color: rgba(180,210,255,.42);
+  transform: translateY(-2px);
 }
 
 .game {
@@ -156,6 +177,20 @@ body::after {
   flex-direction: column;
   align-items: center;
   gap: 18px;
+}
+
+.top-ornament {
+  color: #799acb;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  letter-spacing: 10px;
+  margin-bottom: -8px;
+  animation: softGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes softGlow {
+  from { opacity: .55; }
+  to { opacity: 1; }
 }
 
 .message {
@@ -200,20 +235,21 @@ body::after {
 
 .progress-track {
   width: 100%;
-  height: 2px;
+  height: 4px;
   overflow: hidden;
-  border-radius: 10px;
-  background: rgba(137,178,239,.15);
-  box-shadow: 0 0 10px rgba(82,139,220,.08);
+  border-radius: 20px;
+  background: rgba(137,178,239,.16);
+  box-shadow: 0 0 12px rgba(82,139,220,.08);
   margin-top: -10px;
 }
 
 .progress-fill {
   width: 0%;
   height: 100%;
+  border-radius: inherit;
   background: linear-gradient(90deg, #527dbd, #8fc1ff);
-  box-shadow: 0 0 9px rgba(119,174,255,.5);
-  transition: width .55s ease;
+  box-shadow: 0 0 12px rgba(119,174,255,.55);
+  transition: width .8s cubic-bezier(.22,.8,.25,1);
 }
 
 .board-shell {
@@ -228,15 +264,16 @@ body::after {
   width: 100%;
   height: 100%;
   padding: 10px;
-  border: 1px solid rgba(180,210,255,.16);
-  border-radius: 19px;
+  border: 1px solid rgba(180,210,255,.18);
+  border-radius: 24px;
   background:
     radial-gradient(ellipse at 50% 0%, rgba(90,132,192,.09), transparent 70%),
-    rgba(14,25,44,.52);
+    rgba(14,25,44,.76);
   box-shadow:
-    0 15px 45px rgba(0,0,0,.2),
-    0 0 28px rgba(64,113,183,.055),
-    inset 0 0 22px rgba(130,175,255,.035);
+    0 20px 60px rgba(0,0,0,.25),
+    inset 0 0 30px rgba(130,175,255,.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -386,6 +423,15 @@ body::after {
   animation: gentleGlow 3.2s ease-in-out infinite;
 }
 
+.bottom-ornament {
+  margin-top: -5px;
+  color: #799acb;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  letter-spacing: 12px;
+  animation: softGlow 4s ease-in-out infinite alternate;
+}
+
 #win {
   position: fixed;
   inset: 0;
@@ -394,8 +440,9 @@ body::after {
   align-items: center;
   justify-content: center;
   padding: 22px;
-  background: rgba(3,7,17,.76);
-  backdrop-filter: blur(8px);
+  background: rgba(3,7,17,.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 #win.show {
@@ -403,15 +450,15 @@ body::after {
 }
 
 .win-inner {
-  width: min(100%, 300px);
-  padding: 30px 20px;
+  width: min(100%, 330px);
+  padding: 30px 24px;
   text-align: center;
-  border: 1px solid rgba(180,210,255,.23);
-  border-radius: 22px;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(76,113,171,.17), transparent 70%),
-    rgba(14,25,44,.97);
-  box-shadow: 0 20px 60px rgba(0,0,0,.3), 0 0 30px rgba(84,136,204,.07);
+  border: 1px solid rgba(180,210,255,.3);
+  border-radius: 24px;
+  background: rgba(14,25,44,.96);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.35),
+    inset 0 0 30px rgba(130,175,255,.04);
   animation: modalIn .35s ease both;
 }
 
@@ -421,35 +468,42 @@ body::after {
 }
 
 #winTitle {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   color: #e1ecff;
-  font: 500 34px 'Cormorant Garamond', serif;
-  letter-spacing: 2px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: 3px;
 }
 
 #winSubtitle {
-  margin: -10px 0 20px;
-  color: #9db8df;
-  font-size: 12px;
-  line-height: 1.7;
+  display: none;
 }
 
 #nextButton {
-  padding: 10px 23px;
+  min-width: 120px;
+  padding: 11px 20px;
   border: 1px solid rgba(180,210,255,.3);
   border-radius: 50px;
-  background: rgba(45,76,122,.55);
+  background: rgba(45,76,122,.65);
   color: #e0eaff;
-  font: 12px 'Quicksand', sans-serif;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 12px;
   letter-spacing: 2px;
   cursor: pointer;
+  transition: background .25s ease, transform .25s ease;
 }
 
-#nextButton:active {
-  background: rgba(68,105,160,.65);
+#nextButton:hover {
+  background: rgba(65,105,165,.55);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 420px) {
+  .floating-star.one { left: 3%; font-size: 42px; }
+  .floating-star.two { right: 4%; font-size: 28px; }
+  .floating-star.three { left: 5%; font-size: 32px; }
+  .floating-star.four { right: 4%; font-size: 45px; }
   .game { gap: 15px; }
   .board-shell { width: min(88vw, 360px); padding: 7px; }
   .board-wrap { padding: 8px; }
@@ -458,30 +512,43 @@ body::after {
     width: calc(100% - 16px);
     height: calc(100% - 16px);
   }
+  .bottom-ornament { margin-top: -3px; }
 }
 
 @media (max-height: 650px) {
   body { padding-top: 60px; padding-bottom: 12px; }
   .game { gap: 10px; }
+  .top-ornament { margin-bottom: -7px; font-size: 16px; }
   .board-shell { width: min(78vw, 330px); }
+  .bottom-ornament { font-size: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .message.visible,
-  #unlockMessage.visible,
-  #spaceMessage.visible { animation: none; }
-  .progress-fill, .star { transition: none; animation: none; }
+  .star, .floating-star, .top-ornament, .bottom-ornament,
+  .message.visible, #unlockMessage.visible, #spaceMessage.visible {
+    animation: none;
+  }
+  #returnButton, #restartButton, #nextButton, .progress-fill {
+    transition: none;
+  }
 }
 </style>
 </head>
-
 <body>
-<div id="starfield" aria-hidden="true"></div>
+  
+<div class="star-background" id="starBackground" aria-hidden="true"></div>
+
+<div class="floating-star one" aria-hidden="true">✦</div>
+<div class="floating-star two" aria-hidden="true">✧</div>
+<div class="floating-star three" aria-hidden="true">✧</div>
+<div class="floating-star four" aria-hidden="true">✦</div>
 
 <button id="returnButton" type="button">return</button>
 <button id="restartButton" type="button">restart</button>
 
 <main class="game">
+  <div class="top-ornament">✦　⋆　✦</div>
+
   <div class="message" id="message">almosttt, you need to occupy the entire space</div>
   <div class="message" id="unlockMessage">yayyy you unlocked the picrews</div>
 
@@ -502,6 +569,8 @@ body::after {
   </div>
 
   <div id="spaceMessage">almosttt, you need to occupy the entire space</div>
+
+  <div class="bottom-ornament">✧　·　✦　·　✧</div>
 </main>
 
 <div id="win">
@@ -513,7 +582,6 @@ body::after {
 </div>
 
 <script>
-  
 (() => {
   const TOTAL_LEVELS = 10;
   const REWARD_KEY = "birthday_unlocked_rewards";
@@ -530,16 +598,16 @@ body::after {
   ];
 
   const levelDesigns = [
-    { size: 5, colors: 3, route: "rows",       cuts: [1, 3, 2] },
-    { size: 5, colors: 3, route: "columns",    cuts: [3, 1, 2] },
-    { size: 5, colors: 4, route: "spiral",     cuts: [2, 4, 1, 3] },
-    { size: 5, colors: 4, route: "rowsFlip",   cuts: [4, 1, 3, 2] },
-    { size: 6, colors: 4, route: "columns",    cuts: [1, 4, 2, 3] },
-    { size: 6, colors: 4, route: "spiral",     cuts: [3, 1, 4, 2] },
-    { size: 6, colors: 5, route: "rowsFlip",   cuts: [2, 4, 1, 3, 2] },
+    { size: 5, colors: 3, route: "rows",        cuts: [1, 3, 2] },
+    { size: 5, colors: 3, route: "columns",     cuts: [3, 1, 2] },
+    { size: 5, colors: 4, route: "spiral",      cuts: [2, 4, 1, 3] },
+    { size: 5, colors: 4, route: "rowsFlip",    cuts: [4, 1, 3, 2] },
+    { size: 6, colors: 4, route: "columns",     cuts: [1, 4, 2, 3] },
+    { size: 6, colors: 4, route: "spiral",      cuts: [3, 1, 4, 2] },
+    { size: 6, colors: 5, route: "rowsFlip",    cuts: [2, 4, 1, 3, 2] },
     { size: 6, colors: 5, route: "columnsFlip", cuts: [4, 1, 3, 2, 5] },
-    { size: 6, colors: 6, route: "spiralFlip", cuts: [1, 4, 2, 5, 3, 2] },
-    { size: 6, colors: 6, route: "rows",       cuts: [4, 2, 5, 1, 3, 2] }
+    { size: 6, colors: 6, route: "spiralFlip",  cuts: [1, 4, 2, 5, 3, 2] },
+    { size: 6, colors: 6, route: "rows",        cuts: [4, 2, 5, 1, 3, 2] }
   ];
 
   const board = document.getElementById("board");
@@ -569,20 +637,39 @@ body::after {
   let messageTimer = null;
 
   function makeStars() {
-    const field = document.getElementById("starfield");
-    field.innerHTML = "";
+    const background = document.getElementById("starBackground");
+    background.innerHTML = "";
+
+    const symbols = ["✦", "✧", "⋆", "·"];
 
     for (let i = 0; i < 42; i++) {
       const star = document.createElement("span");
-      const cross = i % 9 === 0;
+      const type = Math.random();
 
-      star.className = cross ? "star cross" : "star";
-      star.style.left = `${(i * 37 + 11) % 100}%`;
-      star.style.top = `${(i * 61 + 7) % 100}%`;
-      star.style.setProperty("--opacity", cross ? ".3" : ".23");
-      star.style.setProperty("--duration", `${3 + (i % 5) * .7}s`);
-      star.style.setProperty("--delay", `${-(i % 7) * .6}s`);
-      field.appendChild(star);
+      star.className = "star";
+
+      if (type < 0.25) {
+        star.classList.add("large");
+        star.textContent = symbols[Math.floor(Math.random() * 3)];
+      } else if (type < 0.55) {
+        star.classList.add("small");
+        star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      } else {
+        star.classList.add("dot");
+      }
+
+      const starSize = type > 0.55
+        ? (Math.random() * 2 + 1) + "px"
+        : (Math.random() * 18 + 8) + "px";
+
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.setProperty("--size", starSize);
+      star.style.setProperty("--duration", (5 + Math.random() * 9) + "s");
+      star.style.setProperty("--twinkle", (2 + Math.random() * 4) + "s");
+      star.style.setProperty("--delay", (-Math.random() * 10) + "s");
+
+      background.appendChild(star);
     }
   }
 
@@ -592,7 +679,9 @@ body::after {
 
   function saveReward() {
     try {
-      const rewards = JSON.parse(localStorage.getItem(REWARD_KEY) || "[]");
+      const rewards = JSON.parse(
+        localStorage.getItem(REWARD_KEY) || "[]"
+      );
 
       if (Array.isArray(rewards)) {
         if (!rewards.includes("picrews")) rewards.push("picrews");
@@ -605,36 +694,31 @@ body::after {
     }
   }
 
-  
-function updateProgress() {
-  const progress = Math.min(completed, 10);
-  progressFill.style.width = `${progress * 10}%`;
+  function updateProgress() {
+    const progress = Math.min(completed, TOTAL_LEVELS);
+    progressFill.style.width = `${progress * 10}%`;
 
-  if (progress >= 10) {
-    unlockMessage.textContent = "yayyy you unlocked the picrews";
-    unlockMessage.classList.add("visible");
-  } else {
-    unlockMessage.classList.remove("visible");
+    if (progress >= TOTAL_LEVELS) {
+      unlockMessage.textContent = "yayyy you unlocked the picrews";
+      unlockMessage.classList.add("visible");
+      saveReward();
+    } else {
+      unlockMessage.classList.remove("visible");
+    }
   }
-}
-
 
   function showSpaceMessage() {
-    if (isUnlocked()) {
-      spaceMessage.classList.add("visible");
-      clearTimeout(messageTimer);
-      messageTimer = setTimeout(() => {
-        spaceMessage.classList.remove("visible");
-      }, 3200);
-    } else {
-      message.dataset.show = "true";
-      message.classList.add("visible");
-      clearTimeout(messageTimer);
-      messageTimer = setTimeout(() => {
-        message.dataset.show = "false";
-        message.classList.remove("visible");
-      }, 3200);
-    }
+    const target = isUnlocked() ? spaceMessage : message;
+
+    message.classList.remove("visible");
+    spaceMessage.classList.remove("visible");
+
+    target.classList.add("visible");
+
+    clearTimeout(messageTimer);
+    messageTimer = setTimeout(() => {
+      target.classList.remove("visible");
+    }, 3200);
   }
 
   function rowSnake() {
@@ -642,9 +726,13 @@ function updateProgress() {
 
     for (let row = 0; row < size; row++) {
       if (row % 2 === 0) {
-        for (let col = 0; col < size; col++) result.push(row * size + col);
+        for (let col = 0; col < size; col++) {
+          result.push(row * size + col);
+        }
       } else {
-        for (let col = size - 1; col >= 0; col--) result.push(row * size + col);
+        for (let col = size - 1; col >= 0; col--) {
+          result.push(row * size + col);
+        }
       }
     }
 
@@ -656,9 +744,13 @@ function updateProgress() {
 
     for (let col = 0; col < size; col++) {
       if (col % 2 === 0) {
-        for (let row = 0; row < size; row++) result.push(row * size + col);
+        for (let row = 0; row < size; row++) {
+          result.push(row * size + col);
+        }
       } else {
-        for (let row = size - 1; row >= 0; row--) result.push(row * size + col);
+        for (let row = size - 1; row >= 0; row--) {
+          result.push(row * size + col);
+        }
       }
     }
 
@@ -673,19 +765,27 @@ function updateProgress() {
     let right = size - 1;
 
     while (top <= bottom && left <= right) {
-      for (let col = left; col <= right; col++) result.push(top * size + col);
+      for (let col = left; col <= right; col++) {
+        result.push(top * size + col);
+      }
       top++;
 
-      for (let row = top; row <= bottom; row++) result.push(row * size + right);
+      for (let row = top; row <= bottom; row++) {
+        result.push(row * size + right);
+      }
       right--;
 
       if (top <= bottom) {
-        for (let col = right; col >= left; col--) result.push(bottom * size + col);
+        for (let col = right; col >= left; col--) {
+          result.push(bottom * size + col);
+        }
         bottom--;
       }
 
       if (left <= right) {
-        for (let row = bottom; row >= top; row--) result.push(row * size + left);
+        for (let row = bottom; row >= top; row--) {
+          result.push(row * size + left);
+        }
         left++;
       }
     }
@@ -715,14 +815,18 @@ function updateProgress() {
 
     const shares = weights.map(weight => {
       const exact = remaining * weight / totalWeight;
-      return { whole: Math.floor(exact), fraction: exact - Math.floor(exact) };
+      return {
+        whole: Math.floor(exact),
+        fraction: exact - Math.floor(exact)
+      };
     });
 
     shares.forEach((share, index) => {
       lengths[index] += share.whole;
     });
 
-    const leftover = route.length - lengths.reduce((sum, length) => sum + length, 0);
+    const leftover = route.length -
+      lengths.reduce((sum, length) => sum + length, 0);
 
     const order = shares
       .map((share, index) => ({ index, fraction: share.fraction }))
@@ -763,11 +867,18 @@ function updateProgress() {
     endpoints = new Map();
 
     paths.forEach(path => {
-      endpoints.set(path.start, { pathIndex: path.index, color: path.color });
-      endpoints.set(path.end, { pathIndex: path.index, color: path.color });
+      endpoints.set(path.start, {
+        pathIndex: path.index,
+        color: path.color
+      });
+
+      endpoints.set(path.end, {
+        pathIndex: path.index,
+        color: path.color
+      });
     });
   }
-
+  
   function renderBoard() {
     board.innerHTML = "";
     board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
@@ -805,7 +916,11 @@ function updateProgress() {
         return `${col + .5},${row + .5}`;
       });
 
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+      const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polyline"
+      );
+
       line.setAttribute("points", points.join(" "));
       line.setAttribute("stroke", path.color);
       line.setAttribute("class", "path-line");
@@ -820,7 +935,11 @@ function updateProgress() {
         return `${col + .5},${row + .5}`;
       });
 
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+      const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "polyline"
+      );
+
       line.setAttribute("points", points.join(" "));
       line.setAttribute("stroke", drawing.color);
       line.setAttribute("class", "path-line preview");
@@ -828,7 +947,9 @@ function updateProgress() {
       svg.appendChild(line);
     }
 
-    board.querySelectorAll(".endpoint").forEach(dot => dot.classList.remove("connected"));
+    board.querySelectorAll(".endpoint").forEach(dot => {
+      dot.classList.remove("connected");
+    });
 
     paths.forEach(path => {
       if (!path.complete) return;
@@ -840,13 +961,21 @@ function updateProgress() {
       });
     });
 
-    board.querySelectorAll(".cell").forEach(cell => cell.classList.remove("path-filled"));
+    board.querySelectorAll(".cell").forEach(cell => {
+      cell.classList.remove("path-filled");
+    });
 
     const filled = new Set();
+
     paths.forEach(path => {
-      if (path.complete) path.cells.forEach(index => filled.add(index));
+      if (path.complete) {
+        path.cells.forEach(index => filled.add(index));
+      }
     });
-    if (drawing) drawing.cells.forEach(index => filled.add(index));
+
+    if (drawing) {
+      drawing.cells.forEach(index => filled.add(index));
+    }
 
     filled.forEach(index => {
       const cell = board.querySelector(`[data-index="${index}"]`);
@@ -865,10 +994,17 @@ function updateProgress() {
 
   function cellFromPointer(event) {
     const rect = board.getBoundingClientRect();
-    const col = Math.floor((event.clientX - rect.left) / rect.width * size);
-    const row = Math.floor((event.clientY - rect.top) / rect.height * size);
+    const col = Math.floor(
+      (event.clientX - rect.left) / rect.width * size
+    );
+    const row = Math.floor(
+      (event.clientY - rect.top) / rect.height * size
+    );
 
-    if (row < 0 || col < 0 || row >= size || col >= size) return null;
+    if (row < 0 || col < 0 || row >= size || col >= size) {
+      return null;
+    }
+
     return row * size + col;
   }
 
@@ -921,17 +1057,26 @@ function updateProgress() {
     if (!adjacent(current, target)) return;
 
     const endpoint = endpoints.get(target);
-    if (endpoint && endpoint.pathIndex !== drawing.pathIndex) return;
+
+    if (endpoint && endpoint.pathIndex !== drawing.pathIndex) {
+      return;
+    }
 
     const owner = occupied.get(target);
-    if (owner !== undefined && owner !== drawing.pathIndex) return;
+
+    if (owner !== undefined && owner !== drawing.pathIndex) {
+      return;
+    }
 
     drawing.cells.push(target);
 
     if (endpoint && endpoint.pathIndex === drawing.pathIndex) {
       const path = paths[drawing.pathIndex];
 
-      if ((target === path.start || target === path.end) && target !== drawing.start) {
+      if (
+        (target === path.start || target === path.end) &&
+        target !== drawing.start
+      ) {
         path.cells = [...drawing.cells];
         path.complete = true;
         drawing = null;
@@ -951,7 +1096,10 @@ function updateProgress() {
     const path = paths[drawing.pathIndex];
     const last = drawing.cells[drawing.cells.length - 1];
 
-    if ((last === path.start || last === path.end) && last !== drawing.start) {
+    if (
+      (last === path.start || last === path.end) &&
+      last !== drawing.start
+    ) {
       path.cells = [...drawing.cells];
       path.complete = true;
       rebuildOccupied();
@@ -966,7 +1114,9 @@ function updateProgress() {
     const filled = new Set();
 
     paths.forEach(path => {
-      if (path.complete) path.cells.forEach(cell => filled.add(cell));
+      if (path.complete) {
+        path.cells.forEach(cell => filled.add(cell));
+      }
     });
 
     return filled.size === size * size;
@@ -989,21 +1139,24 @@ function updateProgress() {
   function winLevel() {
     locked = true;
 
-    completed = Math.max(completed, Math.min(level, TOTAL_LEVELS));
+    completed = Math.max(
+      completed,
+      Math.min(level, TOTAL_LEVELS)
+    );
+
     localStorage.setItem(PROGRESS_KEY, String(completed));
 
     if (completed >= TOTAL_LEVELS) {
       saveReward();
-      winTitle.textContent = "YAY";
-      winSubtitle.textContent = "";
-      nextButton.textContent = "next";
-    } else {
-      winTitle.textContent = "YAY";
-      winSubtitle.textContent = "";
-      nextButton.textContent = "next";
     }
 
     updateProgress();
+
+    // Keep the completion popup the same on every level.
+    winTitle.textContent = "YAY";
+    winSubtitle.textContent = "";
+    nextButton.textContent = "next";
+
     win.classList.add("show");
   }
 
@@ -1074,7 +1227,13 @@ function updateProgress() {
 
       const newCurrent = drawing.cells[drawing.cells.length - 1];
 
-      if (drawing.cells.length === oldLength && newCurrent === current) break;
+      if (
+        drawing.cells.length === oldLength &&
+        newCurrent === current
+      ) {
+        break;
+      }
+
       current = newCurrent;
     }
   });
@@ -1094,7 +1253,9 @@ function updateProgress() {
     startLevel();
   });
 
-  if (completed >= TOTAL_LEVELS) saveReward();
+  if (completed >= TOTAL_LEVELS) {
+    saveReward();
+  }
 
   makeStars();
   startLevel();

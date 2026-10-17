@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,13 +10,6 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap');
 
-:root {
-  --bg: #080d18;
-  --blue: #8fc1ff;
-  --pale: #dce8fa;
-  --muted: #91acd4;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -26,7 +20,7 @@
 html, body {
   width: 100%;
   min-height: 100%;
-  background: var(--bg);
+  background: #080d18;
 }
 
 body {
@@ -37,15 +31,14 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: max(70px, env(safe-area-inset-top)) 18px
-           max(24px, env(safe-area-inset-bottom));
-  color: var(--pale);
+  padding: max(70px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+  color: #dce8fa;
   font-family: 'Quicksand', sans-serif;
   background:
-    radial-gradient(ellipse at 50% 43%, rgba(31,60,101,.48) 0%, transparent 48%),
+    radial-gradient(ellipse at 50% 43%, rgba(31,60,101,.48), transparent 48%),
     radial-gradient(ellipse at 8% 12%, rgba(57,91,143,.13), transparent 34%),
     radial-gradient(ellipse at 92% 86%, rgba(49,78,128,.13), transparent 36%),
-    linear-gradient(145deg, #0c1525 0%, #080d18 55%, #070b14 100%);
+    linear-gradient(145deg, #0c1525, #080d18 55%, #070b14);
 }
 
 body::before,
@@ -54,7 +47,6 @@ body::after {
   position: fixed;
   pointer-events: none;
   border-radius: 50%;
-  filter: blur(1px);
   z-index: 0;
 }
 
@@ -64,9 +56,7 @@ body::before {
   top: -130px;
   right: -95px;
   border: 1px solid rgba(143,193,255,.06);
-  box-shadow:
-    0 0 0 26px rgba(143,193,255,.018),
-    0 0 0 58px rgba(143,193,255,.012);
+  box-shadow: 0 0 0 26px rgba(143,193,255,.018), 0 0 0 58px rgba(143,193,255,.012);
 }
 
 body::after {
@@ -75,9 +65,7 @@ body::after {
   bottom: -125px;
   left: -90px;
   border: 1px solid rgba(143,193,255,.06);
-  box-shadow:
-    0 0 0 24px rgba(143,193,255,.016),
-    0 0 0 52px rgba(143,193,255,.01);
+  box-shadow: 0 0 0 24px rgba(143,193,255,.016), 0 0 0 52px rgba(143,193,255,.01);
 }
 
 #starfield {
@@ -148,7 +136,7 @@ body::after {
   cursor: pointer;
   z-index: 5;
   backdrop-filter: blur(8px);
-  transition: background .25s, border-color .25s, box-shadow .25s;
+  transition: background .25s, border-color .25s;
 }
 
 #returnButton { left: 16px; }
@@ -158,7 +146,6 @@ body::after {
 #restartButton:active {
   background: rgba(65,105,165,.4);
   border-color: rgba(180,210,255,.42);
-  box-shadow: 0 0 14px rgba(119,174,255,.1);
 }
 
 .game {
@@ -168,7 +155,7 @@ body::after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
 }
 
 .message {
@@ -186,6 +173,17 @@ body::after {
 
 .message.visible {
   opacity: .92;
+  animation: gentleGlow 3.2s ease-in-out infinite;
+}
+
+#unlockMessage {
+  color: #c6deff;
+  display: none;
+}
+
+#unlockMessage.visible {
+  display: block;
+  opacity: .96;
   animation: gentleGlow 3.2s ease-in-out infinite;
 }
 
@@ -207,7 +205,7 @@ body::after {
   border-radius: 10px;
   background: rgba(137,178,239,.15);
   box-shadow: 0 0 10px rgba(82,139,220,.08);
-  margin-top: -12px;
+  margin-top: -10px;
 }
 
 .progress-fill {
@@ -295,8 +293,7 @@ body::after {
   height: 3px;
   border-radius: 50%;
   background: rgba(153,190,243,.17);
-  box-shadow: 0 0 4px rgba(143,193,255,.035);
-  transition: background .15s, box-shadow .15s;
+  transition: background .15s;
 }
 
 .cell.path-filled::after {
@@ -315,9 +312,8 @@ body::after {
   border-radius: 50%;
   border: 2px solid var(--color);
   background: var(--color);
-  box-shadow:
-    0 0 8px color-mix(in srgb, var(--color) 35%, transparent),
-    0 0 18px color-mix(in srgb, var(--color) 15%, transparent);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color) 35%, transparent),
+              0 0 18px color-mix(in srgb, var(--color) 15%, transparent);
 }
 
 .endpoint::after {
@@ -329,9 +325,8 @@ body::after {
 }
 
 .endpoint.connected {
-  box-shadow:
-    0 0 9px color-mix(in srgb, var(--color) 48%, transparent),
-    0 0 20px color-mix(in srgb, var(--color) 22%, transparent);
+  box-shadow: 0 0 9px color-mix(in srgb, var(--color) 48%, transparent),
+              0 0 20px color-mix(in srgb, var(--color) 22%, transparent);
 }
 
 #lines {
@@ -372,6 +367,24 @@ body::after {
 .ornament.b { bottom: 0; right: 50%; }
 .ornament.c { top: 50%; left: 0; }
 .ornament.d { top: 50%; right: 0; }
+
+#spaceMessage {
+  min-height: 22px;
+  width: 100%;
+  text-align: center;
+  color: #b9d3ff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(15px, 4vw, 19px);
+  letter-spacing: .5px;
+  opacity: 0;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+
+#spaceMessage.visible {
+  opacity: .92;
+  animation: gentleGlow 3.2s ease-in-out infinite;
+}
 
 #win {
   position: fixed;
@@ -414,6 +427,13 @@ body::after {
   letter-spacing: 2px;
 }
 
+#winSubtitle {
+  margin: -10px 0 20px;
+  color: #9db8df;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
 #nextButton {
   padding: 10px 23px;
   border: 1px solid rgba(180,210,255,.3);
@@ -423,16 +443,14 @@ body::after {
   font: 12px 'Quicksand', sans-serif;
   letter-spacing: 2px;
   cursor: pointer;
-  transition: background .2s, box-shadow .2s;
 }
 
 #nextButton:active {
   background: rgba(68,105,160,.65);
-  box-shadow: 0 0 15px rgba(143,193,255,.12);
 }
 
 @media (max-width: 420px) {
-  .game { gap: 17px; }
+  .game { gap: 15px; }
   .board-shell { width: min(88vw, 360px); padding: 7px; }
   .board-wrap { padding: 8px; }
   #lines {
@@ -444,14 +462,15 @@ body::after {
 
 @media (max-height: 650px) {
   body { padding-top: 60px; padding-bottom: 12px; }
-  .game { gap: 12px; }
+  .game { gap: 10px; }
   .board-shell { width: min(78vw, 330px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .message.visible { animation: none; }
-  .progress-fill { transition: none; }
-  .star { animation: none; }
+  .message.visible,
+  #unlockMessage.visible,
+  #spaceMessage.visible { animation: none; }
+  .progress-fill, .star { transition: none; animation: none; }
 }
 </style>
 </head>
@@ -463,7 +482,8 @@ body::after {
 <button id="restartButton" type="button">restart</button>
 
 <main class="game">
-  <div class="message" id="message">almostt, you need to connect everything</div>
+  <div class="message" id="message">almosttt, you need to occupy the entire space</div>
+  <div class="message" id="unlockMessage">yayyy you unlocked the picrews</div>
 
   <div class="progress-track">
     <div class="progress-fill" id="progressFill"></div>
@@ -480,16 +500,21 @@ body::after {
       <svg id="lines" viewBox="0 0 5 5" preserveAspectRatio="none"></svg>
     </div>
   </div>
+
+  <div id="spaceMessage">almosttt, you need to occupy the entire space</div>
 </main>
 
 <div id="win">
   <div class="win-inner">
     <h2 id="winTitle">YAY</h2>
+    <div id="winSubtitle"></div>
     <button id="nextButton" type="button">next</button>
   </div>
 </div>
 
-<script>(() => {
+<script>
+  
+(() => {
   const TOTAL_LEVELS = 10;
   const REWARD_KEY = "birthday_unlocked_rewards";
   const PROGRESS_KEY = "colormatch_completed_levels";
@@ -505,25 +530,28 @@ body::after {
   ];
 
   const levelDesigns = [
-    { size: 5, colors: 3, route: "rows",      cuts: [1, 3, 2] },
-    { size: 5, colors: 3, route: "columns",   cuts: [3, 1, 2] },
-    { size: 5, colors: 4, route: "spiral",    cuts: [2, 4, 1, 3] },
-    { size: 5, colors: 4, route: "rowsFlip",  cuts: [4, 1, 3, 2] },
-    { size: 6, colors: 4, route: "columns",   cuts: [1, 4, 2, 3] },
-    { size: 6, colors: 4, route: "spiral",    cuts: [3, 1, 4, 2] },
-    { size: 6, colors: 5, route: "rowsFlip",  cuts: [2, 4, 1, 3, 2] },
+    { size: 5, colors: 3, route: "rows",       cuts: [1, 3, 2] },
+    { size: 5, colors: 3, route: "columns",    cuts: [3, 1, 2] },
+    { size: 5, colors: 4, route: "spiral",     cuts: [2, 4, 1, 3] },
+    { size: 5, colors: 4, route: "rowsFlip",   cuts: [4, 1, 3, 2] },
+    { size: 6, colors: 4, route: "columns",    cuts: [1, 4, 2, 3] },
+    { size: 6, colors: 4, route: "spiral",     cuts: [3, 1, 4, 2] },
+    { size: 6, colors: 5, route: "rowsFlip",   cuts: [2, 4, 1, 3, 2] },
     { size: 6, colors: 5, route: "columnsFlip", cuts: [4, 1, 3, 2, 5] },
     { size: 6, colors: 6, route: "spiralFlip", cuts: [1, 4, 2, 5, 3, 2] },
-    { size: 6, colors: 6, route: "rows",     cuts: [4, 2, 5, 1, 3, 2] }
+    { size: 6, colors: 6, route: "rows",       cuts: [4, 2, 5, 1, 3, 2] }
   ];
 
   const board = document.getElementById("board");
   const boardWrap = document.getElementById("boardWrap");
   const svg = document.getElementById("lines");
   const message = document.getElementById("message");
+  const unlockMessage = document.getElementById("unlockMessage");
+  const spaceMessage = document.getElementById("spaceMessage");
   const progressFill = document.getElementById("progressFill");
   const win = document.getElementById("win");
   const winTitle = document.getElementById("winTitle");
+  const winSubtitle = document.getElementById("winSubtitle");
   const nextButton = document.getElementById("nextButton");
 
   let completed = Math.max(
@@ -531,7 +559,7 @@ body::after {
     Math.min(TOTAL_LEVELS, Number(localStorage.getItem(PROGRESS_KEY)) || 0)
   );
 
-  let level = Math.min(completed + 1, TOTAL_LEVELS);
+  let level = completed >= TOTAL_LEVELS ? TOTAL_LEVELS + 1 : completed + 1;
   let size = 5;
   let paths = [];
   let endpoints = new Map();
@@ -554,21 +582,20 @@ body::after {
       star.style.setProperty("--opacity", cross ? ".3" : ".23");
       star.style.setProperty("--duration", `${3 + (i % 5) * .7}s`);
       star.style.setProperty("--delay", `${-(i % 7) * .6}s`);
-
       field.appendChild(star);
     }
   }
 
+  function isUnlocked() {
+    return completed >= TOTAL_LEVELS;
+  }
+
   function saveReward() {
     try {
-      const rewards = JSON.parse(
-        localStorage.getItem(REWARD_KEY) || "[]"
-      );
+      const rewards = JSON.parse(localStorage.getItem(REWARD_KEY) || "[]");
 
       if (Array.isArray(rewards)) {
-        if (!rewards.includes("picrews")) {
-          rewards.push("picrews");
-        }
+        if (!rewards.includes("picrews")) rewards.push("picrews");
         localStorage.setItem(REWARD_KEY, JSON.stringify(rewards));
       } else {
         localStorage.setItem(REWARD_KEY, JSON.stringify(["picrews"]));
@@ -578,20 +605,32 @@ body::after {
     }
   }
 
-  function showMessage() {
-    message.classList.remove("visible");
-    void message.offsetWidth;
-    message.classList.add("visible");
-
-    clearTimeout(messageTimer);
-    messageTimer = setTimeout(() => {
-      message.classList.remove("visible");
-    }, 3200);
+  function updateProgress() {
+    const percent = Math.min(completed / TOTAL_LEVELS, 1) * 100;
+    progressFill.style.width = `${percent}%`;
+    unlockMessage.classList.toggle("visible", isUnlocked());
+    message.classList.toggle(
+      "visible",
+      !isUnlocked() && message.dataset.show === "true"
+    );
   }
 
-  function updateProgress() {
-    progressFill.style.width =
-      `${Math.min(completed / TOTAL_LEVELS, 1) * 100}%`;
+  function showSpaceMessage() {
+    if (isUnlocked()) {
+      spaceMessage.classList.add("visible");
+      clearTimeout(messageTimer);
+      messageTimer = setTimeout(() => {
+        spaceMessage.classList.remove("visible");
+      }, 3200);
+    } else {
+      message.dataset.show = "true";
+      message.classList.add("visible");
+      clearTimeout(messageTimer);
+      messageTimer = setTimeout(() => {
+        message.dataset.show = "false";
+        message.classList.remove("visible");
+      }, 3200);
+    }
   }
 
   function rowSnake() {
@@ -599,13 +638,9 @@ body::after {
 
     for (let row = 0; row < size; row++) {
       if (row % 2 === 0) {
-        for (let col = 0; col < size; col++) {
-          result.push(row * size + col);
-        }
+        for (let col = 0; col < size; col++) result.push(row * size + col);
       } else {
-        for (let col = size - 1; col >= 0; col--) {
-          result.push(row * size + col);
-        }
+        for (let col = size - 1; col >= 0; col--) result.push(row * size + col);
       }
     }
 
@@ -617,13 +652,9 @@ body::after {
 
     for (let col = 0; col < size; col++) {
       if (col % 2 === 0) {
-        for (let row = 0; row < size; row++) {
-          result.push(row * size + col);
-        }
+        for (let row = 0; row < size; row++) result.push(row * size + col);
       } else {
-        for (let row = size - 1; row >= 0; row--) {
-          result.push(row * size + col);
-        }
+        for (let row = size - 1; row >= 0; row--) result.push(row * size + col);
       }
     }
 
@@ -638,27 +669,19 @@ body::after {
     let right = size - 1;
 
     while (top <= bottom && left <= right) {
-      for (let col = left; col <= right; col++) {
-        result.push(top * size + col);
-      }
+      for (let col = left; col <= right; col++) result.push(top * size + col);
       top++;
 
-      for (let row = top; row <= bottom; row++) {
-        result.push(row * size + right);
-      }
+      for (let row = top; row <= bottom; row++) result.push(row * size + right);
       right--;
 
       if (top <= bottom) {
-        for (let col = right; col >= left; col--) {
-          result.push(bottom * size + col);
-        }
+        for (let col = right; col >= left; col--) result.push(bottom * size + col);
         bottom--;
       }
 
       if (left <= right) {
-        for (let row = bottom; row >= top; row--) {
-          result.push(row * size + left);
-        }
+        for (let row = bottom; row >= top; row--) result.push(row * size + left);
         left++;
       }
     }
@@ -677,56 +700,48 @@ body::after {
       route = rowSnake();
     }
 
-    if (
-      type === "rowsFlip" ||
-      type === "columnsFlip" ||
-      type === "spiralFlip"
-    ) {
-      route.reverse();
-    }
-
+    if (type.endsWith("Flip")) route.reverse();
     return route;
   }
 
   function splitRoute(route, count, weights) {
-    const total = route.length;
     const lengths = Array(count).fill(2);
-    let remaining = total - count * 2;
-
+    const remaining = route.length - count * 2;
     const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-    const fractions = weights.map(weight => {
+
+    const shares = weights.map(weight => {
       const exact = remaining * weight / totalWeight;
       return { whole: Math.floor(exact), fraction: exact - Math.floor(exact) };
     });
 
-    fractions.forEach((part, i) => {
-      lengths[i] += part.whole;
+    shares.forEach((share, index) => {
+      lengths[index] += share.whole;
     });
 
-    let assigned = lengths.reduce((sum, length) => sum + length, 0);
-    let leftover = total - assigned;
+    const leftover = route.length - lengths.reduce((sum, length) => sum + length, 0);
 
-    const order = fractions
-      .map((part, i) => ({ i, fraction: part.fraction }))
+    const order = shares
+      .map((share, index) => ({ index, fraction: share.fraction }))
       .sort((a, b) => b.fraction - a.fraction);
 
     for (let i = 0; i < leftover; i++) {
-      lengths[order[i % order.length].i]++;
+      lengths[order[i % order.length].index]++;
     }
 
-    const result = [];
+    const chunks = [];
     let cursor = 0;
 
-    for (const length of lengths) {
-      result.push(route.slice(cursor, cursor + length));
+    lengths.forEach(length => {
+      chunks.push(route.slice(cursor, cursor + length));
       cursor += length;
-    }
+    });
 
-    return result;
+    return chunks;
   }
 
   function makeSolution() {
-    const design = levelDesigns[level - 1];
+    const designIndex = (level - 1) % TOTAL_LEVELS;
+    const design = levelDesigns[designIndex];
     size = design.size;
 
     const route = makeRoute(design.route);
@@ -737,7 +752,6 @@ body::after {
       color: palette[index],
       start: cells[0],
       end: cells[cells.length - 1],
-      solution: cells,
       cells: [],
       complete: false
     }));
@@ -745,15 +759,8 @@ body::after {
     endpoints = new Map();
 
     paths.forEach(path => {
-      endpoints.set(path.start, {
-        pathIndex: path.index,
-        color: path.color
-      });
-
-      endpoints.set(path.end, {
-        pathIndex: path.index,
-        color: path.color
-      });
+      endpoints.set(path.start, { pathIndex: path.index, color: path.color });
+      endpoints.set(path.end, { pathIndex: path.index, color: path.color });
     });
   }
 
@@ -769,11 +776,10 @@ body::after {
       cell.dataset.index = index;
 
       if (endpoints.has(index)) {
-        const endpointInfo = endpoints.get(index);
+        const info = endpoints.get(index);
         const dot = document.createElement("div");
-
         dot.className = "endpoint";
-        dot.style.setProperty("--color", endpointInfo.color);
+        dot.style.setProperty("--color", info.color);
         cell.appendChild(dot);
       }
 
@@ -783,57 +789,24 @@ body::after {
     renderLines();
   }
 
-  function drawPath(path, isPreview = false) {
-    if (path.length < 2) return;
-
-    const points = path.map(index => {
-      const row = Math.floor(index / size);
-      const col = index % size;
-      return `${col + .5},${row + .5}`;
-    });
-
-    const line = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "polyline"
-    );
-
-    line.setAttribute("points", points.join(" "));
-    line.setAttribute(
-      "stroke",
-      isPreview ? drawing.color : paths.find(p => p.cells === path)?.color || "#8fc1ff"
-    );
-    line.setAttribute("class", isPreview ? "path-line preview" : "path-line");
-
-    const color = isPreview
-      ? drawing.color
-      : paths.find(p => p.cells === path)?.color || "#8fc1ff";
-
-    line.style.color = color;
-    svg.appendChild(line);
-  }
-
   function renderLines() {
     svg.innerHTML = "";
 
     paths.forEach(path => {
-      if (path.cells.length > 1) {
-        const points = path.cells.map(index => {
-          const row = Math.floor(index / size);
-          const col = index % size;
-          return `${col + .5},${row + .5}`;
-        });
+      if (path.cells.length < 2) return;
 
-        const line = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "polyline"
-        );
+      const points = path.cells.map(index => {
+        const row = Math.floor(index / size);
+        const col = index % size;
+        return `${col + .5},${row + .5}`;
+      });
 
-        line.setAttribute("points", points.join(" "));
-        line.setAttribute("stroke", path.color);
-        line.setAttribute("class", "path-line");
-        line.style.color = path.color;
-        svg.appendChild(line);
-      }
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+      line.setAttribute("points", points.join(" "));
+      line.setAttribute("stroke", path.color);
+      line.setAttribute("class", "path-line");
+      line.style.color = path.color;
+      svg.appendChild(line);
     });
 
     if (drawing && drawing.cells.length > 1) {
@@ -843,11 +816,7 @@ body::after {
         return `${col + .5},${row + .5}`;
       });
 
-      const line = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "polyline"
-      );
-
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
       line.setAttribute("points", points.join(" "));
       line.setAttribute("stroke", drawing.color);
       line.setAttribute("class", "path-line preview");
@@ -855,9 +824,7 @@ body::after {
       svg.appendChild(line);
     }
 
-    board.querySelectorAll(".endpoint").forEach(dot => {
-      dot.classList.remove("connected");
-    });
+    board.querySelectorAll(".endpoint").forEach(dot => dot.classList.remove("connected"));
 
     paths.forEach(path => {
       if (!path.complete) return;
@@ -869,16 +836,12 @@ body::after {
       });
     });
 
-    board.querySelectorAll(".cell").forEach(cell => {
-      cell.classList.remove("path-filled");
-    });
+    board.querySelectorAll(".cell").forEach(cell => cell.classList.remove("path-filled"));
 
     const filled = new Set();
-
     paths.forEach(path => {
       if (path.complete) path.cells.forEach(index => filled.add(index));
     });
-
     if (drawing) drawing.cells.forEach(index => filled.add(index));
 
     filled.forEach(index => {
@@ -898,19 +861,10 @@ body::after {
 
   function cellFromPointer(event) {
     const rect = board.getBoundingClientRect();
+    const col = Math.floor((event.clientX - rect.left) / rect.width * size);
+    const row = Math.floor((event.clientY - rect.top) / rect.height * size);
 
-    const col = Math.floor(
-      ((event.clientX - rect.left) / rect.width) * size
-    );
-
-    const row = Math.floor(
-      ((event.clientY - rect.top) / rect.height) * size
-    );
-
-    if (row < 0 || col < 0 || row >= size || col >= size) {
-      return null;
-    }
-
+    if (row < 0 || col < 0 || row >= size || col >= size) return null;
     return row * size + col;
   }
 
@@ -963,26 +917,17 @@ body::after {
     if (!adjacent(current, target)) return;
 
     const endpoint = endpoints.get(target);
-
-    if (endpoint && endpoint.pathIndex !== drawing.pathIndex) {
-      return;
-    }
+    if (endpoint && endpoint.pathIndex !== drawing.pathIndex) return;
 
     const owner = occupied.get(target);
-
-    if (owner !== undefined && owner !== drawing.pathIndex) {
-      return;
-    }
+    if (owner !== undefined && owner !== drawing.pathIndex) return;
 
     drawing.cells.push(target);
 
     if (endpoint && endpoint.pathIndex === drawing.pathIndex) {
       const path = paths[drawing.pathIndex];
 
-      if (
-        (target === path.start || target === path.end) &&
-        target !== drawing.start
-      ) {
+      if ((target === path.start || target === path.end) && target !== drawing.start) {
         path.cells = [...drawing.cells];
         path.complete = true;
         drawing = null;
@@ -1002,10 +947,7 @@ body::after {
     const path = paths[drawing.pathIndex];
     const last = drawing.cells[drawing.cells.length - 1];
 
-    if (
-      (last === path.start || last === path.end) &&
-      last !== drawing.start
-    ) {
+    if ((last === path.start || last === path.end) && last !== drawing.start) {
       path.cells = [...drawing.cells];
       path.complete = true;
       rebuildOccupied();
@@ -1020,9 +962,7 @@ body::after {
     const filled = new Set();
 
     paths.forEach(path => {
-      if (path.complete) {
-        path.cells.forEach(cell => filled.add(cell));
-      }
+      if (path.complete) path.cells.forEach(cell => filled.add(cell));
     });
 
     return filled.size === size * size;
@@ -1030,30 +970,36 @@ body::after {
 
   function checkComplete() {
     const allConnected = paths.every(path => path.complete);
+    const covered = allCellsCovered();
 
-    if (allConnected && allCellsCovered()) {
+    if (allConnected && covered) {
+      message.classList.remove("visible");
+      spaceMessage.classList.remove("visible");
+      message.dataset.show = "false";
       winLevel();
-    } else if (allConnected) {
-      showMessage();
+    } else if (allConnected && !covered) {
+      showSpaceMessage();
     }
   }
 
   function winLevel() {
     locked = true;
 
-    completed = Math.max(completed, level);
+    completed = Math.max(completed, Math.min(level, TOTAL_LEVELS));
     localStorage.setItem(PROGRESS_KEY, String(completed));
-    updateProgress();
 
     if (completed >= TOTAL_LEVELS) {
       saveReward();
       winTitle.textContent = "YAY ♡";
-      nextButton.textContent = "finish";
+      winSubtitle.textContent = "yayyy, you unlocked the picrews. keep playing if you want!";
+      nextButton.textContent = "keep playing";
     } else {
       winTitle.textContent = "YAY";
+      winSubtitle.textContent = "";
       nextButton.textContent = "next";
     }
 
+    updateProgress();
     win.classList.add("show");
   }
 
@@ -1062,6 +1008,8 @@ body::after {
     drawing = null;
     win.classList.remove("show");
     message.classList.remove("visible");
+    spaceMessage.classList.remove("visible");
+    message.dataset.show = "false";
     clearTimeout(messageTimer);
 
     makeSolution();
@@ -1074,17 +1022,15 @@ body::after {
     if (locked) return;
 
     const cell = cellFromPointer(event);
-    if (cell === null) return;
+    if (cell === null || !endpoints.has(cell)) return;
 
-    if (endpoints.has(cell)) {
-      event.preventDefault();
+    event.preventDefault();
 
-      try {
-        boardWrap.setPointerCapture(event.pointerId);
-      } catch {}
+    try {
+      boardWrap.setPointerCapture(event.pointerId);
+    } catch {}
 
-      beginDrawing(cell);
-    }
+    beginDrawing(cell);
   });
 
   boardWrap.addEventListener("pointermove", event => {
@@ -1102,12 +1048,10 @@ body::after {
       const targetCol = target % size;
 
       let next;
+      const dx = Math.abs(targetCol - col);
+      const dy = Math.abs(targetRow - row);
 
-      // Prefer the axis with the larger remaining distance.
-      const horizontalDistance = Math.abs(targetCol - col);
-      const verticalDistance = Math.abs(targetRow - row);
-
-      if (horizontalDistance >= verticalDistance && col !== targetCol) {
+      if (dx >= dy && col !== targetCol) {
         next = current + (targetCol > col ? 1 : -1);
       } else if (row !== targetRow) {
         next = current + (targetRow > row ? size : -size);
@@ -1126,10 +1070,7 @@ body::after {
 
       const newCurrent = drawing.cells[drawing.cells.length - 1];
 
-      if (drawing.cells.length === oldLength && newCurrent === current) {
-        break;
-      }
-
+      if (drawing.cells.length === oldLength && newCurrent === current) break;
       current = newCurrent;
     }
   });
@@ -1137,9 +1078,7 @@ body::after {
   boardWrap.addEventListener("pointerup", finishDrawing);
   boardWrap.addEventListener("pointercancel", finishDrawing);
 
-  document.getElementById("restartButton").addEventListener("click", () => {
-    startLevel();
-  });
+  document.getElementById("restartButton").addEventListener("click", startLevel);
 
   document.getElementById("returnButton").addEventListener("click", () => {
     window.location.href = RETURN_PAGE;
@@ -1147,15 +1086,11 @@ body::after {
 
   nextButton.addEventListener("click", () => {
     win.classList.remove("show");
-
-    if (completed >= TOTAL_LEVELS) {
-      window.location.href = RETURN_PAGE;
-      return;
-    }
-
-    level = Math.min(level + 1, TOTAL_LEVELS);
+    level++;
     startLevel();
   });
+
+  if (completed >= TOTAL_LEVELS) saveReward();
 
   makeStars();
   startLevel();
